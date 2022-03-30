@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
 import 'package:stocio_app/login/screens/login_screen.dart';
 import 'package:stocio_app/splash/screens/splash_screen.dart';
+import 'package:sizer/sizer.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -15,17 +16,21 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      navigatorKey: navigatorKey,
-      initialRoute: '/splash',
-      routes: {
-        '/splash': (context) => const Splash(),
-        '/login': (context) => const Login(),
-        '/home': (context) => const Home(),
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          navigatorKey: navigatorKey,
+          initialRoute: '/splash',
+          routes: {
+            '/splash': (context) => const Splash(),
+            '/login': (context) => const Login(),
+            '/home': (context) => const Home(),
+          },
+        );
       },
     );
   }
