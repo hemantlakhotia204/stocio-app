@@ -22,18 +22,33 @@ class SButton extends StatefulWidget {
 class _SButtonState extends State<SButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: widget.primaryColor,
-      padding: EdgeInsets.symmetric(vertical: 1.h, horizontal: 5.w),
-      width: widget.width ?? 60.w,
-      child: ElevatedButton(
-        onPressed: widget.onPressed,
+    return GestureDetector(
+      onTap: widget.onPressed,
+      child: Container(
+        decoration: BoxDecoration(
+          color: widget.primaryColor,
+          borderRadius: BorderRadius.all(Radius.circular(3.w)),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              spreadRadius: 0.5,
+              blurRadius: 2,
+              offset: Offset(3, 3)
+            )
+          ]
+        ),
+        padding: EdgeInsets.symmetric(vertical: 2.5.h, horizontal: 5.w),
+        margin: EdgeInsets.symmetric(vertical: 2.h, horizontal: 4.w),
+        width: widget.width ?? 40.w,
         child: Text(
           widget.text,
           style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500
-          ),
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: widget.primaryColor == Colors.white
+                  ? Colors.black
+                  : Colors.white),
+          textAlign: TextAlign.center,
         ),
       ),
     );
