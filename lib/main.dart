@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
 import 'package:stocio_app/login/screens/login_screen.dart';
+import 'package:stocio_app/login/screens/register_screen.dart';
 import 'package:stocio_app/splash/screens/splash_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
           routes: {
             '/splash': (context) => const Splash(),
             '/login': (context) => const Login(),
+            '/register': (context) => const Register(),
             '/home': (context) => const Home(),
           },
         );

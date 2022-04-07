@@ -37,6 +37,7 @@ dependencies:
   sizer: ^2.0.15
   json_serializable: ^6.1.4
   shared_preferences: ^2.0.13
+  dropdown_search: ^2.0.1
 
 dev_dependencies:
   flutter_test:

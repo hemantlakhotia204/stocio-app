@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
+import 'package:stocio_app/login/screens/register_screen.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -28,7 +29,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         _dyOffset = 100.h;
         break;
       case 1:
-        _dyOffset = 55.h;
+        _dyOffset = 50.h;
         break;
     }
 
@@ -57,33 +58,42 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           child: SingleChildScrollView(
             child: Stack(
               children: [
-                AnimatedContainer(
-                  padding: Utils.screenPadding(),
-                  color: _bgColor,
-                  alignment: Alignment.center,
-                  duration: const Duration(milliseconds: 500),
-                  child: Column(
-                    children: [
-                      Container(
-                          padding: EdgeInsets.symmetric(vertical: 10.h),
-                          child: Image.asset('assets/images/login_bg.png')),
-                      Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: EdgeInsets.only(bottom: 15.h),
-                        child: SButton(
-                          width: 60.w,
-                          primaryColor: Utils.getColor('PBB'),
-                          text: 'Welcome back',
-                          onPressed: () {
-                            if (_pageState != 1) {
-                              setState(() {
-                                _pageState = 1;
-                              });
-                            }
-                          },
-                        ),
-                      )
-                    ],
+                GestureDetector(
+                  onTap: () {
+                    if (_pageState != 0) {
+                      setState(() {
+                        _pageState = 0;
+                      });
+                    }
+                  },
+                  child: AnimatedContainer(
+                    padding: Utils.screenPadding(),
+                    color: _bgColor,
+                    alignment: Alignment.center,
+                    duration: const Duration(milliseconds: 500),
+                    child: Column(
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(vertical: 10.h),
+                            child: Image.asset('assets/images/login_bg.png')),
+                        Container(
+                          alignment: Alignment.bottomCenter,
+                          padding: EdgeInsets.only(bottom: 15.h),
+                          child: SButton(
+                            width: 60.w,
+                            primaryColor: Utils.getColor('PBB'),
+                            text: 'Welcome back',
+                            onPressed: () {
+                              if (_pageState != 1) {
+                                setState(() {
+                                  _pageState = 1;
+                                });
+                              }
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 AnimatedContainer(
@@ -178,6 +188,46 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               },
                               text: 'Sign In',
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
+                                        return const Register();
+                                      },
+                                      transitionDuration:
+                                          const Duration(milliseconds: 600),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        // const begin = Offset(0, 1);
+                                        // const end = Offset.zero;
+                                        // const curve = Curves.ease;
+                                        //
+                                        // var tween = Tween(
+                                        //         begin: begin, end: end)
+                                        //     .chain(CurveTween(curve: curve));
+
+                                        return FadeTransition(opacity: animation, child: child,);
+                                      }),
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                color: Colors.transparent,
+                                width: 80.w,
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 1.h, horizontal: 4.w),
+                                child: Text(
+                                  'still apart from stocio? join now',
+                                  style: TextStyle(
+                                      color: Colors.blue,
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
