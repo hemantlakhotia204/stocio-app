@@ -18,10 +18,12 @@ class DropDownSearch extends StatefulWidget {
 class _DropDownSearchState extends State<DropDownSearch> {
   bool _listVisibility = false;
   final FocusNode _focusNode = FocusNode();
+  List<String> items = [];
 
   @override
   Widget build(BuildContext context) {
     String? hintText = widget.hintText;
+    items = items.isEmpty ? widget.items : items;
 
     return WillPopScope(
       onWillPop: () async {
@@ -34,7 +36,8 @@ class _DropDownSearchState extends State<DropDownSearch> {
         }
         return true;
       },
-      child: Container(
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 1500),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(2.w),
             border: Border.all(color: Utils.getColor('PT'))),
@@ -47,8 +50,8 @@ class _DropDownSearchState extends State<DropDownSearch> {
                 });
               },
               child: Container(
-                height: 10.h,
-                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                height: widget.controller.text.isEmpty ? 8.h : 10.h,
+                padding: EdgeInsets.symmetric(horizontal: 2.w),
                 child: Stack(
                   children: [
                     TextFormField(
@@ -57,6 +60,11 @@ class _DropDownSearchState extends State<DropDownSearch> {
                           setState(() {
                             _listVisibility = !_listVisibility;
                           });
+                        }
+                      },
+                      onChanged: (String? value) {
+                        if (value != null) {
+                          _sortCollege(value);
                         }
                       },
                       maxLines: 3,
@@ -74,8 +82,11 @@ class _DropDownSearchState extends State<DropDownSearch> {
                                 fontWeight: FontWeight.w300,
                                 fontSize: 15.sp)
                             : null,
-                        contentPadding:
-                            EdgeInsets.only(left: 2.w, top: 2.h, right: 2.w),
+                        contentPadding: EdgeInsets.only(
+                            left: 2.w,
+                            top: 2.h,
+                            right: 2.w,
+                            bottom: widget.controller.text.isEmpty ? 0 : 2.h),
                       ),
                       focusNode: _focusNode,
                       controller: widget.controller,
@@ -98,7 +109,7 @@ class _DropDownSearchState extends State<DropDownSearch> {
                           });
                         },
                         child: Icon(
-                          Icons.arrow_drop_down_outlined,
+                          _listVisibility ? Icons.arrow_drop_up_outlined :Icons.arrow_drop_down_outlined,
                           size: 24.sp,
                           color: Colors.white,
                         ),
@@ -111,33 +122,56 @@ class _DropDownSearchState extends State<DropDownSearch> {
             // SizedBox(height: 1.h),
             Visibility(
               visible: _listVisibility,
-              child: ListView.builder(
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: widget.items.length < 5 ? widget.items.length : 5,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                      onTap: () {
-                        widget.controller.text = widget.items[index];
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(bottom: 1.h),
-                        padding: Utils.contentPadding(vertical: 1.h),
-                        child: Text(
-                          widget.items[index],
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
+              child: SizedBox(
+                height: 40.h,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: items.length < 5 ? items.length : 5,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onTap: () {
+                          widget.controller.text = items[index];
+                          if (_focusNode.hasFocus) {
+                            _focusNode.unfocus();
+                          }
+                          if (_listVisibility) {
+                            setState(() {
+                              _listVisibility = false;
+                            });
+                          }
+                        },
+                        child: Container(
+                          margin: EdgeInsets.only(bottom: 1.h),
+                          padding: Utils.contentPadding(vertical: 1.h),
+                          child: Text(
+                            items[index],
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }),
+                      );
+                    }),
+              ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  void _sortCollege(String value) {
+    List<String> _sortedItems = [];
+    items = widget.items;
+    for (var element in items) {
+      if(element.contains(value)) {
+        _sortedItems.add(element);
+      }
+    }
+    setState(() {
+      items = _sortedItems;
+    });
   }
 }
