@@ -20,8 +20,9 @@ class Utils {
         .showSnackBar(SnackBar(content: Text(message)));
   }
 
-  static contentPadding() {
-    return EdgeInsets.symmetric(horizontal: 5.w, vertical: 2.5.h);
+  static contentPadding({double? horizontal, double? vertical}) {
+    return EdgeInsets.symmetric(
+        horizontal: horizontal ?? 5.w, vertical: vertical ?? 2.5.h);
   }
 
   static screenPadding() {
@@ -37,11 +38,10 @@ class Utils {
               overflow: TextOverflow.ellipsis,
             )
           : const SizedBox(),
-      labelStyle: label != null ? TextStyle(
-        color: getColor(''),
-        fontWeight: FontWeight.w500,
-        fontSize: 15.sp
-      ): null,
+      labelStyle: label != null
+          ? TextStyle(
+              color: getColor(''), fontWeight: FontWeight.w500, fontSize: 16.sp)
+          : null,
       contentPadding: contentPadding(),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(2.w),
@@ -66,6 +66,9 @@ class Utils {
         //primary bg
         color = const Color(0xff1F2128);
         break;
+      case 'SB':
+        color = const Color(0xffb6aef0);
+        break;
       case 'DB':
         //dark bg
         color = const Color(0xff191B20);
@@ -81,5 +84,11 @@ class Utils {
         break;
     }
     return color;
+  }
+
+  static Widget CustomLoader() {
+    return LinearProgressIndicator(
+      color: getColor('PBB'),
+    );
   }
 }

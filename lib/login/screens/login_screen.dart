@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
+import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/login/screens/register_screen.dart';
 
 class Login extends StatefulWidget {
@@ -14,7 +15,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   double _dyOffset = 0;
   int _pageState = 0;
-  final Color _bgColor = const Color(0xffb6aef0);
+  final Color _bgColor = Utils.getColor('SB');
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _pinController = TextEditingController();
@@ -112,24 +113,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         key: _key,
                         child: Column(
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: 'sign in to ',
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.sp,
-                                        fontWeight: FontWeight.w600),
-                                    children: [
-                                      TextSpan(
-                                          style: TextStyle(
-                                              color: Utils.getColor('PT'),
-                                              fontSize: 24.sp,
-                                              fontWeight: FontWeight.w600),
-                                          text: 'stocio')
-                                    ]),
-                              ),
+                            const SText(
+                              prefixText: 'sign in to ',
+                              suffixText: 'stocio',
                             ),
                             TextFormField(
                               style: TextStyle(
@@ -209,7 +195,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                         //         begin: begin, end: end)
                                         //     .chain(CurveTween(curve: curve));
 
-                                        return FadeTransition(opacity: animation, child: child,);
+                                        return FadeTransition(
+                                          opacity: animation,
+                                          child: child,
+                                        );
                                       }),
                                 );
                               },
