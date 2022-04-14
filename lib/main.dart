@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
+import 'package:stocio_app/login/screens/confirm_screen.dart';
 import 'package:stocio_app/login/screens/form_screen.dart';
 import 'package:stocio_app/login/screens/login_screen.dart';
 import 'package:stocio_app/login/screens/register_screen.dart';
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
             '/login': (context) => const Login(),
             '/register': (context) => const Register(),
             '/home': (context) => const Home(),
-            '/form': (context) => const FormScreen()
+            '/form': (context) => const FormScreen(),
+            '/confirm_mail': (context) => const ConfirmScreen(),
           },
         );
       },
