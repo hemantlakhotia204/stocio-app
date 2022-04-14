@@ -21,9 +21,15 @@ class _DropDownSearchState extends State<DropDownSearch> {
   List<String> items = [];
 
   @override
+  void initState() {
+    items = widget.items;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     String? hintText = widget.hintText;
-    items = items.isEmpty ? widget.items : items;
+    // items = items.isEmpty ? widget.items : items;
 
     return WillPopScope(
       onWillPop: () async {
@@ -123,7 +129,7 @@ class _DropDownSearchState extends State<DropDownSearch> {
             Visibility(
               visible: _listVisibility,
               child: SizedBox(
-                height: 40.h,
+                // height: 40.h,
                 child: ListView.builder(
                     shrinkWrap: true,
                     itemCount: items.length < 5 ? items.length : 5,
@@ -170,6 +176,7 @@ class _DropDownSearchState extends State<DropDownSearch> {
         _sortedItems.add(element);
       }
     }
+    debugPrint(_sortedItems.length.toString());
     setState(() {
       items = _sortedItems;
     });

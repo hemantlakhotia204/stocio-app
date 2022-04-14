@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/dropdown_search.dart';
+import 'package:stocio_app/common/widgets/s_ios_back.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 
 class Register extends StatefulWidget {
@@ -18,9 +19,6 @@ class _RegisterState extends State<Register> {
   List<String> collegeNames = [
     "National Institute of Technology Kurukshetra",
     "National Institute of Technology Allahabad",
-    "National Institute of Technology Allahabad",
-    "National Institute of Technology Allahabad",
-    "National Institute of Technology Allahabad",
   ];
 
   @override
@@ -29,8 +27,11 @@ class _RegisterState extends State<Register> {
       backgroundColor: Utils.getColor('PB'),
       resizeToAvoidBottomInset: true,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: Utils.getColor('SB'),
+        heroTag: 'Next',
+        onPressed: () {
+          Navigator.pushNamed(context, '/form');
+        },
+        backgroundColor: Utils.getColor('SB').withAlpha(50),
         elevation: 10,
         child: Icon(
           Icons.arrow_forward_ios_sharp,
@@ -41,20 +42,7 @@ class _RegisterState extends State<Register> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: EdgeInsets.only(left: 2.w, top: 6.h),
-              height: 40.sp,
-              width: 40.sp,
-              child: FloatingActionButton(
-                onPressed: () => Navigator.pop(context),
-                child: Icon(
-                  Icons.arrow_back,
-                  size: 25.sp,
-                ),
-                backgroundColor: Colors.transparent,
-                // backgroundColor: Colors.white.withOpacity(0.25),
-              ),
-            ),
+            const SBack(),
             Container(
               padding: Utils.screenPadding(),
               child: Form(

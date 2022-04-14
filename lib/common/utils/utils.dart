@@ -85,10 +85,4 @@ class Utils {
     }
     return color;
   }
-
-  static Widget CustomLoader() {
-    return LinearProgressIndicator(
-      color: getColor('PBB'),
-    );
-  }
 }
