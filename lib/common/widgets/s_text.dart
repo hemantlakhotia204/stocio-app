@@ -13,6 +13,7 @@ class SText extends StatelessWidget {
     return Container(
       margin: EdgeInsets.only(top: 1.h, bottom: 2.h),
       child: RichText(
+        textAlign: TextAlign.center,
         text: TextSpan(
             text: prefixText,
             style: TextStyle(
