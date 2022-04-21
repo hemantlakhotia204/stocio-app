@@ -8,9 +8,10 @@ class STextFormField extends StatefulWidget {
   final String? label;
   final IconData icon;
   final String? Function(String?) validator;
+  final FocusNode? focusNode;
 
 
-  const STextFormField({Key? key, required this.controller, this.label, required this.icon, required this.validator}) : super(key: key);
+  const STextFormField({Key? key, required this.controller, this.label, required this.icon, required this.validator, this.focusNode}) : super(key: key);
 
   @override
   State<STextFormField> createState() => _STextFormFieldState();
@@ -33,6 +34,7 @@ class _STextFormFieldState extends State<STextFormField> {
             color: Colors.white,
           )),
       validator: widget.validator,
+      focusNode: widget.focusNode,
     );
   }
 }

@@ -68,6 +68,7 @@ class Utils {
         break;
       case 'SB':
         color = const Color(0xffb6aef0);
+        // color = const Color(0xfff9f7f8);
         break;
       case 'DB':
         //dark bg

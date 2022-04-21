@@ -27,78 +27,77 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
       body: SingleChildScrollView(
         child: Stack(
           children: [
-            Expanded(
-              child: Container(
-                padding: Utils.contentPadding(),
-                child: Padding(
-                  padding: EdgeInsets.only(top: 10.h),
-                  child: Image.asset('assets/images/man_with_tablet.png'),
-                ),
+            Container(
+              padding: Utils.contentPadding(),
+              child: Padding(
+                padding: EdgeInsets.only(top: 10.h),
+                child: Image.asset('assets/images/man_with_tablet.png'),
               ),
             ),
-            Expanded(
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                width: 100.w,
-                decoration: BoxDecoration(
-                  color: Utils.getColor('PB'),
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(8.w)),
-                ),
-                padding: Utils.contentPadding(),
-                margin: EdgeInsets.only(top: 55.h),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      margin: EdgeInsets.only(top: 2.h, bottom: 5.h),
-                      child: const SText(
-                        prefixText: 'we have sent otp\n',
-                       suffixText: 'to your mail',
+            Container(
+              alignment: Alignment.bottomCenter,
+              width: 100.w,
+              decoration: BoxDecoration(
+                color: Utils.getColor('PB'),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(8.w)),
+              ),
+              padding: Utils.contentPadding(),
+              margin: EdgeInsets.only(top: 55.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 2.h, bottom: 5.h),
+                    child: const SText(
+                      prefixText: 'we have sent otp\n',
+                     suffixText: 'to your mail',
+                    ),
+                  ),
+                  Container(
+                    margin: Utils.contentPadding(horizontal: 2.w, vertical: 0),
+                    child: PinCodeTextField(
+                      validator: (value) {
+                        debugPrint(value);
+                        if(value!=null && value.isNotEmpty) {
+                          return '       Otp field cannot be empty';
+                        }
+                        return '';
+                      },
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      autovalidateMode: AutovalidateMode.disabled,
+                      length: 5,
+                      textStyle: TextStyle(color: Utils.getColor('')),
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,
+                      ],
+                      obscureText: true,
+                      blinkWhenObscuring: true,
+                      animationType: AnimationType.fade,
+                      animationDuration: const Duration(milliseconds: 300),
+                      errorAnimationController: errorController,
+                      onChanged: (value) {
+                        ///for testing // errorController.add(ErrorAnimationType.shake);
+                        setState(() {
+                          // currentText = value;
+                        });
+                      },
+                      appContext: context,
+                      pinTheme: PinTheme(
+                        shape: PinCodeFieldShape.box,
+                        inactiveColor: Utils.getColor('PBB'),
+                        activeColor: Utils.getColor(''),
+                        selectedColor: Utils.getColor('')
                       ),
                     ),
-                    Container(
-                      padding: Utils.contentPadding(horizontal: 2.w, vertical: 0),
-                      child: PinCodeTextField(
-                        validator: (value) {
-                          if(value!=null && value.isNotEmpty) {
-                            return 'Otp field cannot be empty';
-                          }
-                          return '';
-                        },
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        length: 5,
-                        textStyle: TextStyle(color: Utils.getColor('')),
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly,
-                        ],
-                        obscureText: true,
-                        blinkWhenObscuring: true,
-                        animationType: AnimationType.fade,
-                        animationDuration: const Duration(milliseconds: 300),
-                        errorAnimationController: errorController,
-                        onChanged: (value) {
-                          errorController.add(ErrorAnimationType.shake); //for testing
-                          setState(() {
-                            // currentText = value;
-                          });
-                        },
-                        appContext: context,
-                        pinTheme: PinTheme(
-                          shape: PinCodeFieldShape.box,
-                          inactiveColor: Utils.getColor('PBB'),
-                          activeColor: Utils.getColor('')
-                        ),
-                      ),
-                    ),
-                    SButton(
-                      text: 'Submit OTP',
-                      onPressed: () {},
-                      primaryColor: Utils.getColor('PBB'),
-                      width: 55.w,
-                    )
-                  ],
-                ),
+                  ),
+                  SButton(
+                    text: 'Submit OTP',
+                    onPressed: () {},
+                    primaryColor: Utils.getColor('PBB'),
+                    width: 55.w,
+                  )
+                ],
               ),
             )
           ],
