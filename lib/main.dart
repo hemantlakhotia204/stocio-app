@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
+import 'package:stocio_app/login/models/register_screen_model.dart';
 import 'package:stocio_app/login/screens/confirm_screen.dart';
 import 'package:stocio_app/login/screens/form_screen.dart';
 import 'package:stocio_app/login/screens/login_screen.dart';
@@ -10,7 +12,9 @@ import 'package:sizer/sizer.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => RegisterScreenModel()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -41,3 +45,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+///CLI command to run when there is change in models:
+///flutter pub run build_runner build

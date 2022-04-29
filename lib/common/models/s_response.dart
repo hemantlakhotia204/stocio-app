@@ -1,13 +1,13 @@
 class SResponse {
   final dynamic data;
-  final String message;
+  final dynamic msg;
 
-  SResponse({this.data, required this.message});
+  SResponse({this.data, this.msg});
 
   factory SResponse.fromJson(Map<String, dynamic> json) {
     return SResponse(
       data: json["data"],
-      message: json["message:"]
+      msg: json["message:"]
     );
   }
 }
