@@ -157,7 +157,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             },
                             text: 'Sign In',
                           ),
-                          GestureDetector(
+                          InkWell(
                             onTap: () {
                               Navigator.push(
                                 context,

@@ -6,9 +6,11 @@ class DropDownSearch extends StatefulWidget {
   final List<String> items;
   final TextEditingController controller;
   final String? hintText;
+  final String? Function(String? value)?  validator;
+  final FormFieldSetter<String>? onSaved;
 
   const DropDownSearch(
-      {Key? key, required this.items, required this.controller, this.hintText})
+      {Key? key, required this.items, required this.controller, this.hintText, this.validator, this.onSaved})
       : super(key: key);
 
   @override
@@ -22,6 +24,8 @@ class _DropDownSearchState extends State<DropDownSearch> {
 
   @override
   void initState() {
+
+    ///assigning data to list
     items = widget.items;
     super.initState();
   }
@@ -29,10 +33,10 @@ class _DropDownSearchState extends State<DropDownSearch> {
   @override
   Widget build(BuildContext context) {
     String? hintText = widget.hintText;
-    // items = items.isEmpty ? widget.items : items;
 
     return WillPopScope(
       onWillPop: () async {
+        /// when back button is pressed in android
         if (_focusNode.hasFocus) {
           _focusNode.unfocus();
           setState(() {
@@ -61,6 +65,10 @@ class _DropDownSearchState extends State<DropDownSearch> {
                 child: Stack(
                   children: [
                     TextFormField(
+                      onSaved: widget.onSaved,
+                      validator: widget.validator,
+
+                      /// when textFormField is clicked
                       onTap: () {
                         if (!_listVisibility) {
                           setState(() {
@@ -104,6 +112,8 @@ class _DropDownSearchState extends State<DropDownSearch> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
+
+                        /// when drop down icon is clicked
                         onTap: () {
                           if (_focusNode.hasFocus) {
                             _focusNode.unfocus();
@@ -135,6 +145,8 @@ class _DropDownSearchState extends State<DropDownSearch> {
                     itemCount: items.length < 5 ? items.length : 5,
                     itemBuilder: (context, index) {
                       return InkWell(
+
+                        ///when an item is selected from the list
                         onTap: () {
                           widget.controller.text = items[index];
                           if (_focusNode.hasFocus) {

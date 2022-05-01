@@ -5,7 +5,6 @@ import 'package:stocio_app/common/models/institute_model.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/dropdown_search.dart';
 import 'package:stocio_app/common/widgets/s_ios_back.dart';
-import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/login/models/register_screen_model.dart';
 
@@ -25,24 +24,15 @@ class _RegisterState extends State<Register> {
     "National Institute of Technology Allahabad",
   ];
 
-  late SLoader loader;
+  /// dummy instance of instituteModel
+  InstituteModel institute = InstituteModel(instituteName: '', domainId: '');
 
   @override
   void initState() {
-    loader = SLoader(context: context);
     super.initState();
-    _getInstitutes();
-  }
 
-  void _getInstitutes() async {
-    await Future.delayed(const Duration(milliseconds: 300), () {
-      if (mounted) {
-        return setState(() {
-          Provider.of<RegisterScreenModel>(context, listen: false)
-              .getInstitutes();
-        });
-      }
-    });
+    ///provider
+    Provider.of<RegisterScreenModel>(context, listen: false).getInstitutes();
   }
 
   @override
@@ -53,7 +43,13 @@ class _RegisterState extends State<Register> {
       floatingActionButton: FloatingActionButton(
         heroTag: 'Next',
         onPressed: () {
-          Navigator.pushNamed(context, '/form');
+          /// validate for field before saving data
+          if (_key.currentState!.validate()) {
+            ///save data
+            _key.currentState!.save();
+            /// navigate to next screen with institute details as arguments
+            Navigator.pushNamed(context, '/form', arguments: institute);
+          }
         },
         backgroundColor: Utils.getColor('SB').withAlpha(50),
         elevation: 10,
@@ -64,14 +60,21 @@ class _RegisterState extends State<Register> {
       ),
       body: Consumer<RegisterScreenModel>(
         builder: (context, instituteModel, child) {
-          // loader.hideLoader();
+
+          /// get data from institute service.
           List<InstituteModel>? institutes = instituteModel.institutes;
+
+          /// check if the data is valid and not empty
           if (institutes != null && institutes.isNotEmpty) {
+
+            /// get institute names from object list to pass in dropDown widget
             List<String> names = [];
             for (var element in institutes) {
               names.add(element.instituteName);
             }
             instituteNames = names;
+
+            /// return this widget if everything is ok
             return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,15 +92,41 @@ class _RegisterState extends State<Register> {
                           ),
                           const SText(
                             prefixText: 'choose your ',
-                            suffixText: 'college',
+                            suffixText: 'institute',
                           ),
                           SizedBox(
                             height: 4.h,
                           ),
                           DropDownSearch(
-                            controller: _instituteController,
-                            items: instituteNames,
-                            hintText: 'College',
+                              controller: _instituteController,
+                              items: instituteNames,
+                              hintText: 'College',
+                              validator: (String? value) {
+                                if (value == null) {
+                                  return 'This field cannot be empty';
+                                }
+
+                                if (!instituteNames
+                                    .asMap()
+                                    .containsValue(value)) {
+                                  return 'Institute not found';
+                                }
+                                // _key.currentState?.setState(() {
+                                //   ins
+                                // });
+                                return null;
+                              },
+                              onSaved: (value) {
+                                for (var element in institutes) {
+                                  debugPrint("HHH");
+                                  if (element.instituteName == value) {
+                                    debugPrint(element.toString() + "H");
+                                    setState(() {
+                                      institute = element;
+                                    });
+                                  }
+                                }
+                              }
                           )
                           // const SText(
                           //     prefixText: 'did not find your college in list, don’t worry,\n',
@@ -110,6 +139,7 @@ class _RegisterState extends State<Register> {
               ),
             );
           } else {
+            /// return this widget if there is some issue
             return const SizedBox(child: Text('Some error, try again'));
           }
         },

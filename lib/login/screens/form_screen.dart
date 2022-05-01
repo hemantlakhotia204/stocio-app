@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:stocio_app/common/models/institute_model.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
@@ -7,29 +8,32 @@ import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
 
 class FormScreen extends StatefulWidget {
-  const FormScreen({Key? key}) : super(key: key);
+  //Institute details passed from register_screen
+  final InstituteModel? arguments;
+
+  const FormScreen({Key? key, this.arguments}) : super(key: key);
 
   @override
   State<FormScreen> createState() => _FormScreenState();
 }
 
 class _FormScreenState extends State<FormScreen> {
-  String collegeName = "NIT Kurukshetra";
-
   @override
   Widget build(BuildContext context) {
-    String _welcomeText = "$collegeName and Stocio \nwelcomes you 😁.";
+    String? abbr = widget.arguments?.abbr;
+    String _welcomeText = "$abbr and Stocio \nwelcomes you 😁.";
 
+    //controllers for the form fields
     final TextEditingController _emailController = TextEditingController();
     final TextEditingController _nameController = TextEditingController();
     final TextEditingController _passwordController = TextEditingController();
     final TextEditingController _confirmController = TextEditingController();
 
+    //focus nodes for the form fields
     final FocusNode _emailNode = FocusNode();
     final FocusNode _nameNode = FocusNode();
     final FocusNode _passNode = FocusNode();
     final FocusNode _confirmNode = FocusNode();
-
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -66,7 +70,8 @@ class _FormScreenState extends State<FormScreen> {
                       SizedBox(
                         height: 6.h,
                       ),
-                      const SText(prefixText: 'enter your ', suffixText: 'details👇'),
+                      const SText(
+                          prefixText: 'enter your ', suffixText: 'details👇'),
                       SizedBox(
                         height: 2.h,
                       ),
@@ -113,12 +118,11 @@ class _FormScreenState extends State<FormScreen> {
                       Align(
                         alignment: Alignment.center,
                         child: SButton(
-                          text: 'Register',
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/confirm_mail');
-                          },
-                          primaryColor: Utils.getColor('PBB')
-                        ),
+                            text: 'Register',
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/confirm_mail');
+                            },
+                            primaryColor: Utils.getColor('PBB')),
                       )
                     ],
                   ),
@@ -131,6 +135,7 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
+  //validator for the form fields
   String? _validator(String? value) {
     if (value != null) {
       return null;
