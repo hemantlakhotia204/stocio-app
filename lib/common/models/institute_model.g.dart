@@ -8,6 +8,7 @@ part of 'institute_model.dart';
 
 InstituteModel _$InstituteModelFromJson(Map<String, dynamic> json) =>
     InstituteModel(
+      id: json['_id'] as String?,
       instituteName: json['instituteName'] as String,
       students: (json['students'] as List<dynamic>?)
           ?.map((e) => e as String)
@@ -24,6 +25,7 @@ InstituteModel _$InstituteModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$InstituteModelToJson(InstituteModel instance) =>
     <String, dynamic>{
+      '_id': instance.id,
       'instituteName': instance.instituteName,
       'students': instance.students,
       'professors': instance.professors,

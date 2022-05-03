@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:stocio_app/common/models/institute_model.dart';
+import 'package:stocio_app/common/models/s_response.dart';
+import 'package:stocio_app/common/models/user_model.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_ios_back.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
+import 'package:stocio_app/login/services/register_service.dart';
 
 class FormScreen extends StatefulWidget {
   //Institute details passed from register_screen
@@ -35,6 +38,10 @@ class _FormScreenState extends State<FormScreen> {
     final FocusNode _passNode = FocusNode();
     final FocusNode _confirmNode = FocusNode();
 
+    final GlobalKey<FormState> _formKey = GlobalKey();
+
+    final RegisterService registerService = RegisterService();
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: Utils.getColor('PB'),
@@ -47,6 +54,7 @@ class _FormScreenState extends State<FormScreen> {
         },
         child: SingleChildScrollView(
           child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -119,8 +127,24 @@ class _FormScreenState extends State<FormScreen> {
                         alignment: Alignment.center,
                         child: SButton(
                             text: 'Register',
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/confirm_mail');
+                            onPressed: () async {
+                              var state = _formKey.currentState;
+                              if (state != null) {
+                                if (state.validate()) {
+                                  state.save();
+                                  UserModel user = UserModel(
+                                      name: _nameController.text,
+                                      email: _emailController.text,
+                                      collegeRef: widget.arguments!.id!,
+                                      password: _passwordController.text);
+                                  SResponse res =
+                                      await registerService.registerUser(user);
+                                  if (res.statusCode == 200) {
+                                    Navigator.pushNamed(
+                                        context, '/confirm_mail');
+                                  }
+                                }
+                              }
                             },
                             primaryColor: Utils.getColor('PBB')),
                       )
