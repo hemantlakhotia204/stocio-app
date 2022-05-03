@@ -5,8 +5,6 @@ class Api {
 
   static const baseUrl = 'https://stocio-backend.vercel.app';
 
-  // final tokenDio = Dio(BaseOptions(baseUrl: baseUrl));
-
   Api._internal();
   static final _singleton = Api._internal();
   factory Api() => _singleton;

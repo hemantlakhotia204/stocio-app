@@ -36,6 +36,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     }
 
     return WillPopScope(
+      // when android back button is pressed
       onWillPop: () async {
         if (_pageState != 0) {
           setState(() {

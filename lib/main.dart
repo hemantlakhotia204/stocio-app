@@ -49,3 +49,5 @@ class MyApp extends StatelessWidget {
 
 ///CLI command to run when there is change in models:
 ///flutter pub run build_runner build
+
+//todo: make form_screen.dart and register_screen.dart one.

@@ -8,6 +8,8 @@ import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 
+
+///Enter OTP SCREEN
 class ConfirmScreen extends StatefulWidget {
   const ConfirmScreen({Key? key}) : super(key: key);
 
@@ -16,6 +18,9 @@ class ConfirmScreen extends StatefulWidget {
 }
 
 class _ConfirmScreenState extends State<ConfirmScreen> {
+
+  ///for otp error handler vibration animation
+  ///package used here: pin_code_fields
   StreamController<ErrorAnimationType> errorController =
       StreamController<ErrorAnimationType>();
 
@@ -57,7 +62,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     margin: Utils.contentPadding(horizontal: 2.w, vertical: 0),
                     child: PinCodeTextField(
                       validator: (value) {
-                        debugPrint(value);
+
                         if(value!=null && value.isNotEmpty) {
                           return '       Otp field cannot be empty';
                         }

@@ -3,14 +3,29 @@ import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 
 class DropDownSearch extends StatefulWidget {
+  /// list of items to be queried
   final List<String> items;
+
+  /// textController for textFormField
   final TextEditingController controller;
+
+  /// hint text to be displayed when widget is in unfocused mode
   final String? hintText;
-  final String? Function(String? value)?  validator;
+
+  /// validator for textFormField
+  final String? Function(String? value)? validator;
+
+  /// when form is saved
   final FormFieldSetter<String>? onSaved;
 
+  ///constructor
   const DropDownSearch(
-      {Key? key, required this.items, required this.controller, this.hintText, this.validator, this.onSaved})
+      {Key? key,
+      required this.items,
+      required this.controller,
+      this.hintText,
+      this.validator,
+      this.onSaved})
       : super(key: key);
 
   @override
@@ -18,13 +33,13 @@ class DropDownSearch extends StatefulWidget {
 }
 
 class _DropDownSearchState extends State<DropDownSearch> {
+  //show state of searched item list
   bool _listVisibility = false;
   final FocusNode _focusNode = FocusNode();
   List<String> items = [];
 
   @override
   void initState() {
-
     ///assigning data to list
     items = widget.items;
     super.initState();
@@ -112,7 +127,6 @@ class _DropDownSearchState extends State<DropDownSearch> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: InkWell(
-
                         /// when drop down icon is clicked
                         onTap: () {
                           if (_focusNode.hasFocus) {
@@ -125,7 +139,9 @@ class _DropDownSearchState extends State<DropDownSearch> {
                           });
                         },
                         child: Icon(
-                          _listVisibility ? Icons.arrow_drop_up_outlined :Icons.arrow_drop_down_outlined,
+                          _listVisibility
+                              ? Icons.arrow_drop_up_outlined
+                              : Icons.arrow_drop_down_outlined,
                           size: 24.sp,
                           color: Colors.white,
                         ),
@@ -145,7 +161,6 @@ class _DropDownSearchState extends State<DropDownSearch> {
                     itemCount: items.length < 5 ? items.length : 5,
                     itemBuilder: (context, index) {
                       return InkWell(
-
                         ///when an item is selected from the list
                         onTap: () {
                           widget.controller.text = items[index];
@@ -184,11 +199,10 @@ class _DropDownSearchState extends State<DropDownSearch> {
     List<String> _sortedItems = [];
     items = widget.items;
     for (var element in items) {
-      if(element.contains(value)) {
+      if (element.contains(value)) {
         _sortedItems.add(element);
       }
     }
-    debugPrint(_sortedItems.length.toString());
     setState(() {
       items = _sortedItems;
     });

@@ -111,9 +111,6 @@ class _RegisterState extends State<Register> {
                                     .containsValue(value)) {
                                   return 'Institute not found';
                                 }
-                                // _key.currentState?.setState(() {
-                                //   ins
-                                // });
                                 return null;
                               },
                               onSaved: (value) {
