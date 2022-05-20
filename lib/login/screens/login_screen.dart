@@ -4,6 +4,7 @@ import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
+import 'package:stocio_app/event/screens/events_screen.dart';
 import 'package:stocio_app/login/screens/register_screen.dart';
 
 class Login extends StatefulWidget {
@@ -124,10 +125,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             label: 'Email',
                             icon: Icons.mail_rounded,
                             validator: (value) {
-                              if (value != null) {
-                                return null;
+                              if (value == null || value.isEmpty) {
+                                return 'field cannot be empty';
                               }
-                              return 'field cannot be empty';
+                              return null;
                             },
                           ),
                           SizedBox(
@@ -138,10 +139,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             label: 'Password',
                             icon: Icons.lock_rounded,
                             validator: (value) {
-                              if (value != null) {
-                                return null;
+                              if (value == null || value.isEmpty) {
+                                return 'field cannot be empty';
                               }
-                              return 'field cannot be empty';
+                              return null;
                             },
                           ),
                           SizedBox(
@@ -153,7 +154,23 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               if (_key.currentState!.validate()) {
                                 String email = _emailController.text.trim();
                                 String pin = _passwordController.text.trim();
-                                debugPrint(email + " " + pin);
+                                Navigator.push(
+                                  context,
+                                  PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                          secondaryAnimation) {
+                                        return const Event();
+                                      },
+                                      transitionDuration:
+                                          const Duration(milliseconds: 600),
+                                      transitionsBuilder: (context, animation,
+                                          secondaryAnimation, child) {
+                                        return FadeTransition(
+                                          opacity: animation,
+                                          child: child,
+                                        );
+                                      }),
+                                );
                               }
                             },
                             text: 'Sign In',
@@ -171,14 +188,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                         const Duration(milliseconds: 600),
                                     transitionsBuilder: (context, animation,
                                         secondaryAnimation, child) {
-                                      // const begin = Offset(0, 1);
-                                      // const end = Offset.zero;
-                                      // const curve = Curves.ease;
-                                      //
-                                      // var tween = Tween(
-                                      //         begin: begin, end: end)
-                                      //     .chain(CurveTween(curve: curve));
-
                                       return FadeTransition(
                                         opacity: animation,
                                         child: child,
