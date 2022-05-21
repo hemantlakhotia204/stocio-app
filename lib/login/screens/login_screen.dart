@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/store/sp_repository.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
 import 'package:stocio_app/event/screens/events_screen.dart';
 import 'package:stocio_app/login/screens/register_screen.dart';
+import 'package:stocio_app/login/services/login_service.dart';
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -22,6 +24,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
+
+  final LoginService _loginService = LoginService();
+  final SharedPreferencesRepository sharedPreferencesRepository = SharedPreferencesRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -150,29 +155,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           ),
                           SButton(
                             primaryColor: Utils.getColor('PT'),
-                            onPressed: () {
-                              if (_key.currentState!.validate()) {
-                                String email = _emailController.text.trim();
-                                String pin = _passwordController.text.trim();
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                      pageBuilder: (context, animation,
-                                          secondaryAnimation) {
-                                        return const Event();
-                                      },
-                                      transitionDuration:
-                                          const Duration(milliseconds: 600),
-                                      transitionsBuilder: (context, animation,
-                                          secondaryAnimation, child) {
-                                        return FadeTransition(
-                                          opacity: animation,
-                                          child: child,
-                                        );
-                                      }),
-                                );
-                              }
-                            },
+                            onPressed: _handleUserLogin,
                             text: 'Sign In',
                           ),
                           InkWell(
@@ -229,5 +212,45 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  /// handle user login
+  _handleUserLogin() async {
+
+    /// validate form state
+    if (_key.currentState!.validate()) {
+      String email = _emailController.text.trim();
+      String password = _passwordController.text.trim();
+
+      /// call login api
+      final res = await _loginService.loginUser(email, password);
+
+      /// if response is OK, do uiChanges
+      if (res.statusCode == 200) {
+
+        /// save at in local storage
+        await sharedPreferencesRepository.save("at", res.data.at);
+        await sharedPreferencesRepository.save("rt", res.data.rt);
+
+
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) {
+                return const Event();
+              },
+              transitionDuration: const Duration(milliseconds: 600),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              }),
+        );
+
+
+      }
+    }
   }
 }
