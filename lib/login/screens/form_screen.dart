@@ -21,26 +21,25 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
+  ///controllers for the form fields
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmController = TextEditingController();
+
+  ///focus nodes for the form fields
+  final FocusNode _emailNode = FocusNode();
+  final FocusNode _nameNode = FocusNode();
+  final FocusNode _passNode = FocusNode();
+  final FocusNode _confirmNode = FocusNode();
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final RegisterService registerService = RegisterService();
+
   @override
   Widget build(BuildContext context) {
     String? abbr = widget.arguments?.abbr;
     String _welcomeText = "$abbr and Stocio \nwelcomes you 😁.";
-
-    //controllers for the form fields
-    final TextEditingController _emailController = TextEditingController();
-    final TextEditingController _nameController = TextEditingController();
-    final TextEditingController _passwordController = TextEditingController();
-    final TextEditingController _confirmController = TextEditingController();
-
-    //focus nodes for the form fields
-    final FocusNode _emailNode = FocusNode();
-    final FocusNode _nameNode = FocusNode();
-    final FocusNode _passNode = FocusNode();
-    final FocusNode _confirmNode = FocusNode();
-
-    final GlobalKey<FormState> _formKey = GlobalKey();
-
-    final RegisterService registerService = RegisterService();
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -127,25 +126,7 @@ class _FormScreenState extends State<FormScreen> {
                         alignment: Alignment.center,
                         child: SButton(
                             text: 'Register',
-                            onPressed: () async {
-                              var state = _formKey.currentState;
-                              if (state != null) {
-                                if (state.validate()) {
-                                  state.save();
-                                  UserModel user = UserModel(
-                                      name: _nameController.text,
-                                      email: _emailController.text,
-                                      collegeRef: widget.arguments!.id!,
-                                      password: _passwordController.text);
-                                  SResponse res =
-                                      await registerService.registerUser(user);
-                                  if (res.statusCode == 200) {
-                                    Navigator.pushNamed(
-                                        context, '/confirm_mail');
-                                  }
-                                }
-                              }
-                            },
+                            onPressed: _registerUser,
                             primaryColor: Utils.getColor('PBB')),
                       )
                     ],
@@ -159,11 +140,31 @@ class _FormScreenState extends State<FormScreen> {
     );
   }
 
-  //validator for the form fields
+  ///validator for the form fields
   String? _validator(String? value) {
     if (value != null) {
       return null;
     }
     return 'field cannot be empty';
+  }
+
+  ///handle register user
+  _registerUser() async {
+    var state = _formKey.currentState;
+    if (state != null) {
+      ///validate state of form
+      if (state.validate()) {
+        UserModel user = UserModel(
+            name: _nameController.text,
+            email: _emailController.text,
+            instituteRef: widget.arguments!.id!,
+            password: _passwordController.text);
+
+        SResponse res = await registerService.registerUser(user);
+        if (res.statusCode == 200) {
+          Navigator.pushNamed(context, '/confirm_mail');
+        }
+      }
+    }
   }
 }

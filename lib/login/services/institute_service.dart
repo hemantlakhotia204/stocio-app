@@ -1,11 +1,11 @@
 import 'package:stocio_app/common/models/s_response.dart';
-import 'package:stocio_app/common/services/api.dart';
+import 'package:stocio_app/common/services/http_dio.dart';
 
 class InstituteService {
   InstituteService._internal();
 
   static final InstituteService _singleton = InstituteService._internal();
-  static final httpDio = Api();
+  static final httpDio = HttpDio();
 
 
   factory InstituteService() {

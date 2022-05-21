@@ -6,10 +6,10 @@ part 'user_model.g.dart';
 class UserModel {
   final String name;
   final String email;
-  final String collegeRef;
+  final String instituteRef;
   final String password;
 
-  UserModel({required this.name, required this.email, required this.collegeRef, required this.password});
+  UserModel({required this.name, required this.email, required this.instituteRef, required this.password});
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 

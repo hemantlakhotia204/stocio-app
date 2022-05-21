@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:stocio_app/common/models/s_response.dart';
 import 'package:stocio_app/common/models/user_model.dart';
-import 'package:stocio_app/common/services/api.dart';
+import 'package:stocio_app/common/services/http_dio.dart';
 
 class RegisterService {
   RegisterService._internal();
 
   static final RegisterService _singleton = RegisterService._internal();
-  static final httpDio = Api();
+  static final httpDio = HttpDio();
 
   factory RegisterService() {
     return _singleton;
@@ -15,9 +15,11 @@ class RegisterService {
 
   Future<SResponse> registerUser(UserModel data) async {
     final response = await httpDio.dio.post(
-      '/api/',
+      '/api/auth/register',
       options: Options(
-        headers: <String, String>{'Content-Type': 'application/json'},
+        headers: <String, String>{
+          'Content-Type': 'application/json'
+        },
       ),
       data: data
     );
