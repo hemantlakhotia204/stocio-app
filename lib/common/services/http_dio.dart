@@ -1,45 +1,48 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
+import 'package:stocio_app/common/jwt/jwt_utils.dart';
+import 'package:stocio_app/main.dart';
 
 class HttpDio {
-  final Dio dio = createDio();
 
   static const baseUrl = 'https://stocio-backend.vercel.app';
 
-  HttpDio._internal();
+  Dio? _dio;
+  HttpDio() {
 
-  static final _singleton = HttpDio._internal();
-
-  factory HttpDio() => _singleton;
-
-  static Dio createDio() {
-    var dio = Dio(BaseOptions(
+    // Dio with a BaseOptions instance.
+    _dio = Dio(BaseOptions(
       baseUrl: baseUrl,
-      receiveTimeout: 15000,
-      connectTimeout: 15000,
-      sendTimeout: 15000,
+      receiveTimeout: 10000,
+      connectTimeout: 10000,
+      sendTimeout: 10000,
+      validateStatus: (status) {
+        return status! < 401;
+      },
+      followRedirects: false
     ));
 
-    dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      return handler.next(options);
+    _dio!.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+      return handler.next(options); //continue
     }, onResponse: (response, handler) {
-      if (response.statusCode != null) {
-        debugPrint(response.statusCode.toString());
-      }
-
-      return handler.next(response);
+      return handler.next(response); //continue
     }, onError: (DioError e, handler) async {
-      if (e.response != null && e.response!.statusCode != null) {
-        // if(navigatorKey.currentState != null) {
-        //
-        // }
-        debugPrint(
-            "Dio Error ${e.toString()} with status code ${e.response!.statusCode}");
+
+      if (e.response != null &&
+          e.response!.statusCode != null &&
+          e.response!.statusCode == 401) {
+        if (navigatorKey.currentState != null) {
+          await JwtUtils.sharedPreferencesRepository.remove("at");
+          await JwtUtils.sharedPreferencesRepository.remove("rt");
+          navigatorKey.currentState!.pushReplacementNamed("/login");
+        }
       } else {
-        return handler.next(e);
+        return handler.next(e); //continue
       }
     }));
 
-    return dio;
+  }
+
+  Dio get dio {
+    return _dio!;
   }
 }

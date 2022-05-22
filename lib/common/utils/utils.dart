@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/models/s_response.dart';
 
 class Utils {
   Widget bgGradient({required Widget child}) {
@@ -16,8 +17,16 @@ class Utils {
   }
 
   static toast(BuildContext context, String message) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+          style: TextStyle(fontSize: 10.sp),
+        ),
+        backgroundColor: Colors.redAccent,
+        duration: const Duration(milliseconds: 2000),
+      ),
+    );
   }
 
   static contentPadding({double? horizontal, double? vertical}) {
@@ -105,4 +114,8 @@ class Utils {
     end: Alignment(1.0, 0.3),
     tileMode: TileMode.clamp,
   );
+
+  static dynamic handleError(error, context)   {
+    return toast(context, (error.message as SResponse).msg!);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/models/s_response.dart';
 import 'package:stocio_app/common/store/sp_repository.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
@@ -26,7 +27,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   final LoginService _loginService = LoginService();
-  final SharedPreferencesRepository sharedPreferencesRepository = SharedPreferencesRepository();
+  final SharedPreferencesRepository sharedPreferencesRepository =
+      SharedPreferencesRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -216,40 +218,40 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   /// handle user login
   _handleUserLogin() async {
-
     /// validate form state
     if (_key.currentState!.validate()) {
       String email = _emailController.text.trim();
       String password = _passwordController.text.trim();
 
       /// call login api
-      final res = await _loginService.loginUser(email, password);
+      try {
+        SResponse res = await _loginService.loginUser(email, password, context);
 
-      /// if response is OK, do uiChanges
-      if (res.statusCode == 200) {
+        /// if response is OK, do uiChanges
+        if (res.statusCode == 200 && res.data != null) {
+          /// save {at, rt} in local storage
+          await sharedPreferencesRepository.save("at", res.data["at"]);
+          await sharedPreferencesRepository.save("rt", res.data["rt"]);
 
-        /// save at in local storage
-        await sharedPreferencesRepository.save("at", res.data.at);
-        await sharedPreferencesRepository.save("rt", res.data.rt);
-
-
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) {
-                return const Event();
-              },
-              transitionDuration: const Duration(milliseconds: 600),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(
-                  opacity: animation,
-                  child: child,
-                );
-              }),
-        );
-
-
+          ///navigate to event screen
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) {
+                  return const Event();
+                },
+                transitionDuration: const Duration(milliseconds: 600),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: child,
+                  );
+                }),
+          );
+        }
+      } catch (error) {
+        Utils.handleError(error, context);
       }
     }
   }

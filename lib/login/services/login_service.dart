@@ -8,26 +8,19 @@ class LoginService {
   static final LoginService _singleton = LoginService._internal();
   static final httpDio = HttpDio();
 
-
   factory LoginService() {
     return _singleton;
   }
 
-  Future<SResponse> loginUser(String email, String password) async {
-
-    var data = {
-      "email": email,
-      "password": password
-    };
+  Future<SResponse> loginUser(String email, String password, context) async {
+    var data = {"email": email, "password": password};
 
     final response = await httpDio.dio.post(
       '/api/auth/login',
       options: Options(
-        headers: <String, String> {
-          'Content-Type': 'application/json'
-        }
+        headers: <String, String>{'Content-Type': 'application/json'},
       ),
-      data: data
+      data: data,
     );
 
     if (response.statusCode == 200) {
