@@ -16,7 +16,7 @@ class RegisterScreenModel with ChangeNotifier {
     _instituteService.getInstitutes().then((response) {
 
       //decoding data received from json
-      if (response.statusCode == 200) {
+      if (response.code == 200) {
         _institutes = List<InstituteModel>.from(
                 response.data.map((data) => InstituteModel.fromJson(data)))
             .toList();

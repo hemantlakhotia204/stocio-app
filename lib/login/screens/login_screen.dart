@@ -228,7 +228,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         SResponse res = await _loginService.loginUser(email, password, context);
 
         /// if response is OK, do uiChanges
-        if (res.statusCode == 200 && res.data != null) {
+        if (res.code == 200 && res.data != null) {
           /// save {at, rt} in local storage
           await sharedPreferencesRepository.save("at", res.data["at"]);
           await sharedPreferencesRepository.save("rt", res.data["rt"]);

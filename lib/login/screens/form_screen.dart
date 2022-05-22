@@ -11,7 +11,7 @@ import 'package:stocio_app/common/widgets/s_text_form_field.dart';
 import 'package:stocio_app/login/services/register_service.dart';
 
 class FormScreen extends StatefulWidget {
-  //Institute details passed from register_screen
+  ///Institute details passed from register_screen
   final InstituteModel? arguments;
 
   const FormScreen({Key? key, this.arguments}) : super(key: key);
@@ -155,14 +155,21 @@ class _FormScreenState extends State<FormScreen> {
       ///validate state of form
       if (state.validate()) {
         UserModel user = UserModel(
-            name: _nameController.text,
-            email: _emailController.text,
-            instituteRef: widget.arguments!.id!,
-            password: _passwordController.text);
-
-        SResponse res = await registerService.registerUser(user);
-        if (res.statusCode == 200) {
-          Navigator.pushNamed(context, '/confirm_mail');
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            instituteRef: widget.arguments!.id!.trim(),
+            password: _passwordController.text.trim());
+        debugPrint("User: " + user.toJson().toString());
+        try {
+          SResponse res = await registerService.registerUser(user);
+          if (res.code == 200) {
+            Navigator.pushNamed(context, '/confirm_mail');
+          } else {
+            Utils.handleError(res, context);
+          }
+        } catch (e) {
+          debugPrint(e.toString());
+          Utils.handleError(e, context);
         }
       }
     }

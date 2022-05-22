@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
-import 'package:stocio_app/common/jwt/jwt_utils.dart';
 import 'package:stocio_app/common/models/institute_model.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/dropdown_search.dart';
@@ -116,9 +115,7 @@ class _RegisterState extends State<Register> {
                               },
                               onSaved: (value) {
                                 for (var element in institutes) {
-                                  debugPrint("HHH");
                                   if (element.instituteName == value) {
-                                    debugPrint(element.toString() + "H");
                                     setState(() {
                                       institute = element;
                                     });

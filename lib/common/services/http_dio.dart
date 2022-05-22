@@ -5,13 +5,14 @@ import 'package:stocio_app/main.dart';
 class HttpDio {
 
   static const baseUrl = 'https://stocio-backend.vercel.app';
+  static const testUrl ='https://stocio-backend-git-test-hemantlakhotia204.vercel.app';
 
   Dio? _dio;
   HttpDio() {
 
     // Dio with a BaseOptions instance.
     _dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
+      baseUrl: testUrl,
       receiveTimeout: 10000,
       connectTimeout: 10000,
       sendTimeout: 10000,
