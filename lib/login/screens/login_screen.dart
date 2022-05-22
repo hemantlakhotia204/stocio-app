@@ -4,6 +4,7 @@ import 'package:stocio_app/common/models/s_response.dart';
 import 'package:stocio_app/common/store/sp_repository.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
+import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
 import 'package:stocio_app/event/screens/events_screen.dart';
@@ -29,9 +30,11 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final LoginService _loginService = LoginService();
   final SharedPreferencesRepository sharedPreferencesRepository =
       SharedPreferencesRepository();
+  late SLoader loader;
 
   @override
   Widget build(BuildContext context) {
+    loader = SLoader(context: context);
     //if [_pageState] is 0 -> show initial page
     //else -> show login input fields page
     switch (_pageState) {
@@ -225,6 +228,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
       /// call login api
       try {
+        loader.showLoaderDialog();
         SResponse res = await _loginService.loginUser(email, password, context);
 
         /// if response is OK, do uiChanges
@@ -232,6 +236,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           /// save {at, rt} in local storage
           await sharedPreferencesRepository.save("at", res.data["at"]);
           await sharedPreferencesRepository.save("rt", res.data["rt"]);
+
+          loader.hideLoader();
 
           ///navigate to event screen
           Navigator.pushReplacement(
@@ -251,6 +257,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           );
         }
       } catch (error) {
+        loader.hideLoader();
         Utils.handleError(error, context);
       }
     }
