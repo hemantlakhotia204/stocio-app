@@ -27,6 +27,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  final FocusNode _emailNode = FocusNode();
+  final FocusNode _passwordNode = FocusNode();
+
   final LoginService _loginService = LoginService();
   final SharedPreferencesRepository sharedPreferencesRepository =
       SharedPreferencesRepository();
@@ -131,6 +134,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             suffixText: 'stocio',
                           ),
                           STextFormField(
+                            textInputType: TextInputType.emailAddress,
+                            focusNode: _emailNode,
                             controller: _emailController,
                             label: 'Email',
                             icon: Icons.mail_rounded,
@@ -145,6 +150,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             height: 2.h,
                           ),
                           STextFormField(
+                            obscureText: true,
+                            focusNode: _passwordNode,
                             controller: _passwordController,
                             label: 'Password',
                             icon: Icons.lock_rounded,
@@ -216,6 +223,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _emailNode.dispose();
+    _passwordNode.dispose();
     super.dispose();
   }
 
@@ -237,7 +246,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           await sharedPreferencesRepository.save("at", res.data["at"]);
           await sharedPreferencesRepository.save("rt", res.data["rt"]);
 
-          loader.hideLoader();
 
           ///navigate to event screen
           Navigator.pushReplacement(
@@ -257,9 +265,19 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           );
         }
       } catch (error) {
-        loader.hideLoader();
+        debugPrint(error.toString());
         Utils.handleError(error, context);
+        _handleStatusCode(error);
       }
+
+      loader.hideLoader();
+    }
+  }
+
+  _handleStatusCode(error) {
+    SResponse message = error.message as SResponse;
+    if (message.code == 403) {
+      Navigator.pushReplacementNamed(context, '/confirm_mail');
     }
   }
 }

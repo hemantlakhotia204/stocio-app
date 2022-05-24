@@ -23,6 +23,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
   ///package used here: pin_code_fields
   StreamController<ErrorAnimationType> errorController =
       StreamController<ErrorAnimationType>();
+  final TextEditingController _otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,10 +65,11 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                       validator: (value) {
 
                         if(value!=null && value.isNotEmpty) {
-                          return '       Otp field cannot be empty';
+                          return 'Otp field cannot be empty';
                         }
                         return '';
                       },
+                      controller: _otpController,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       autovalidateMode: AutovalidateMode.disabled,
                       length: 5,
@@ -98,7 +100,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   ),
                   SButton(
                     text: 'Submit OTP',
-                    onPressed: () {},
+                    onPressed: _handleOtpSubmit,
                     primaryColor: Utils.getColor('PBB'),
                     width: 55.w,
                   )
@@ -109,5 +111,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
         ),
       ),
     );
+  }
+
+  _handleOtpSubmit() {
+
   }
 }
