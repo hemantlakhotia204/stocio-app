@@ -45,9 +45,9 @@ class _RegisterState extends State<Register> {
         onPressed: () {
           /// validate for field before saving data
           if (_key.currentState!.validate()) {
-            ///save data
             _key.currentState!.save();
             /// navigate to next screen with institute details as arguments
+            debugPrint(institute.toJson().toString());
             Navigator.pushNamed(context, '/form', arguments: institute);
           }
         },
@@ -100,7 +100,7 @@ class _RegisterState extends State<Register> {
                           DropDownSearch(
                               controller: _instituteController,
                               items: instituteNames,
-                              hintText: 'College',
+                              hintText: 'Institute',
                               validator: (String? value) {
                                 if (value == null) {
                                   return 'This field cannot be empty';
@@ -115,7 +115,7 @@ class _RegisterState extends State<Register> {
                               },
                               onSaved: (value) {
                                 for (var element in institutes) {
-                                  if (element.instituteName == value) {
+                                  if (element.instituteName.toString() == value.toString().trim()) {
                                     setState(() {
                                       institute = element;
                                     });
