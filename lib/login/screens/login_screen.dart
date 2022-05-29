@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/models/s_response.dart';
@@ -38,8 +39,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     loader = SLoader(context: context);
-    //if [_pageState] is 0 -> show initial page
-    //else -> show login input fields page
+
+    ///if [_pageState] is 0 -> show initial page
+    ///else -> show login input fields page
     switch (_pageState) {
       case 0:
         _dyOffset = 100.h;
@@ -50,7 +52,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     }
 
     return WillPopScope(
-      // when android back button is pressed
+      /// when android back button is pressed
       onWillPop: () async {
         if (_pageState != 0) {
           setState(() {
@@ -78,6 +80,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 GestureDetector(
                   onTap: () {
                     if (_pageState != 0) {
+                      _emailNode.unfocus();
+                      _passwordNode.unfocus();
                       setState(() {
                         _pageState = 0;
                       });
@@ -167,7 +171,8 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           ),
                           SButton(
                             primaryColor: Utils.getColor('PT'),
-                            onPressed: _handleUserLogin,
+                            onPressed: () async =>
+                                await _handleUserLogin(context),
                             text: 'Sign In',
                           ),
                           InkWell(
@@ -229,14 +234,18 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   /// handle user login
-  _handleUserLogin() async {
-    /// validate form state
-    if (_key.currentState!.validate()) {
-      String email = _emailController.text.trim();
-      String password = _passwordController.text.trim();
+  _handleUserLogin(BuildContext context) async {
+    /// remove focus from form fields
+    _emailNode.unfocus();
+    _passwordNode.unfocus();
 
-      /// call login api
-      try {
+    /// validate form state
+    try {
+      if (_key.currentState!.validate()) {
+        String email = _emailController.text.trim().toLowerCase();
+        String password = _passwordController.text.trim();
+
+        /// call login api
         loader.showLoaderDialog();
         SResponse res = await _loginService.loginUser(email, password, context);
 
@@ -245,10 +254,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           /// save {at, rt} in local storage
           await sharedPreferencesRepository.save("at", res.data["at"]);
           await sharedPreferencesRepository.save("rt", res.data["rt"]);
-
+          debugPrint(res.data.toString());
 
           ///navigate to event screen
-          Navigator.pushReplacement(
+          return Navigator.pushReplacement(
             context,
             PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) {
@@ -264,16 +273,22 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 }),
           );
         }
-      } catch (error) {
-        debugPrint(error.toString());
+      }
+    } catch (error) {
+      debugPrint(error.toString());
+
+      /// handle error
+      if (error.runtimeType == DioError) {
+        Utils.toast(context, error.toString());
+      } else {
         Utils.handleError(error, context);
         _handleStatusCode(error);
       }
-
-      loader.hideLoader();
     }
+    loader.hideLoader();
   }
 
+  /// handle error according to status code
   _handleStatusCode(error) {
     SResponse message = error.message as SResponse;
     if (message.code == 403) {

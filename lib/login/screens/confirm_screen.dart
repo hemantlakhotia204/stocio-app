@@ -7,7 +7,7 @@ import 'package:stocio_app/common/utils/utils.dart';
 import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
-
+import 'package:stocio_app/login/services/otp_service.dart';
 
 ///Enter OTP SCREEN
 class ConfirmScreen extends StatefulWidget {
@@ -18,12 +18,15 @@ class ConfirmScreen extends StatefulWidget {
 }
 
 class _ConfirmScreenState extends State<ConfirmScreen> {
-
   ///for otp error handler vibration animation
   ///package used here: pin_code_fields
   StreamController<ErrorAnimationType> errorController =
       StreamController<ErrorAnimationType>();
   final TextEditingController _otpController = TextEditingController();
+
+  final FocusNode _otpNode = FocusNode();
+
+  final OtpService _otpService = OtpService();
 
   @override
   Widget build(BuildContext context) {
@@ -56,15 +59,14 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     margin: EdgeInsets.only(top: 2.h, bottom: 5.h),
                     child: const SText(
                       prefixText: 'we have sent otp\n',
-                     suffixText: 'to your mail',
+                      suffixText: 'to your mail',
                     ),
                   ),
                   Container(
                     margin: Utils.contentPadding(horizontal: 2.w, vertical: 0),
                     child: PinCodeTextField(
                       validator: (value) {
-
-                        if(value!=null && value.isNotEmpty) {
+                        if (value != null && value.isNotEmpty) {
                           return 'Otp field cannot be empty';
                         }
                         return '';
@@ -91,16 +93,15 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                       },
                       appContext: context,
                       pinTheme: PinTheme(
-                        shape: PinCodeFieldShape.box,
-                        inactiveColor: Utils.getColor('PBB'),
-                        activeColor: Utils.getColor(''),
-                        selectedColor: Utils.getColor('')
-                      ),
+                          shape: PinCodeFieldShape.box,
+                          inactiveColor: Utils.getColor('PBB'),
+                          activeColor: Utils.getColor(''),
+                          selectedColor: Utils.getColor('')),
                     ),
                   ),
                   SButton(
                     text: 'Submit OTP',
-                    onPressed: _handleOtpSubmit,
+                    onPressed: _handleOtpSubmit(_otpController.text.trim()),
                     primaryColor: Utils.getColor('PBB'),
                     width: 55.w,
                   )
@@ -113,7 +114,23 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
     );
   }
 
-  _handleOtpSubmit() {
+  @override
+  void dispose() {
+    _otpController.dispose();
+    _otpNode.dispose();
+    super.dispose();
+  }
 
+  _handleOtpSubmit(String otp) async {
+    try {
+      final res = await _otpService.verifyOtp(otp);
+
+      if (res.code == 200) {
+        debugPrint(res.msg);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      Utils.handleError(e, context);
+    }
   }
 }

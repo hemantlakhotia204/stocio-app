@@ -13,11 +13,11 @@ class HttpDio {
     // Dio with a BaseOptions instance.
     _dio = Dio(BaseOptions(
       baseUrl: testUrl,
-      receiveTimeout: 10000,
-      connectTimeout: 10000,
-      sendTimeout: 10000,
+      receiveTimeout: 15000,
+      connectTimeout: 15000,
+      sendTimeout: 15000,
       validateStatus: (status) {
-        return status! < 401;
+        return status! < 500;
       },
       followRedirects: false
     ));

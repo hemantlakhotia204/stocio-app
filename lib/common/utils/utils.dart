@@ -115,7 +115,7 @@ class Utils {
     tileMode: TileMode.clamp,
   );
 
-  static dynamic handleError(error, context)   {
-    return toast(context, (error.message as SResponse).msg!);
+  static dynamic handleError(e, context)   {
+    return toast(context, (e.message as SResponse).msg!);
   }
 }
