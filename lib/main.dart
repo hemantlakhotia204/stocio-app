@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stocio_app/common/models/institute_model.dart';
-import 'package:stocio_app/event/screens/events_screen.dart';
+import 'package:stocio_app/home/screens/home_screen.dart';
 import 'package:stocio_app/login/models/register_screen_model.dart';
 import 'package:stocio_app/login/screens/confirm_screen.dart';
 import 'package:stocio_app/login/screens/form_screen.dart';
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            fontFamily: "Poppins",
           ),
           navigatorKey: navigatorKey,
           initialRoute: '/splash',
@@ -37,7 +38,7 @@ class MyApp extends StatelessWidget {
             '/splash': (context) => const Splash(),
             '/login': (context) => const Login(),
             '/register': (context) => const Register(),
-            '/event': (context) => const Event(),
+            '/home': (context) => const Home(),
             '/form': (context) => FormScreen(arguments: ModalRoute.of(context)!.settings.arguments as InstituteModel),
             '/confirm_mail': (context) => const ConfirmScreen(),
           },

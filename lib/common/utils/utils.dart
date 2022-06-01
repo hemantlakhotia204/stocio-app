@@ -3,16 +3,21 @@ import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/models/s_response.dart';
 
 class Utils {
-  Widget bgGradient({required Widget child}) {
-    return Container(
-      padding: EdgeInsets.zero,
-      margin: EdgeInsets.zero,
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xff191b20), Color(0xff1f2128)])),
-      child: child,
+  static BoxDecoration bgGradient() {
+    return BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            getColor('PB'),
+            getColor('DB'),
+            getColor('PB'),
+          ],
+          stops: const [
+            0.1,
+            0.4,
+            1
+          ]),
     );
   }
 
@@ -75,24 +80,27 @@ class Utils {
     switch (type) {
       case 'PB':
         //primary bg
-        color = const Color(0xff1F2128);
+        // color = const Color(0xff2C2A3C);
+        //1a182c
+        color = const Color(0xff1f1c36);
+
         break;
       case 'SB':
         color = const Color(0xffb6aef0);
-        // color = const Color(0xfff9f7f8);
         break;
       case 'DB':
         //dark bg
-        color = const Color(0xff191B20);
+        color = const Color(0xff181a20);
         break;
       case 'PT':
         //primary text
-        color = const Color(0xff7142d6);
+        // color = const Color(0xff7142d6);
+        color = const Color(0xffa2467a);
         break;
       case 'PBB':
         //primary button bg
-        // color = const Color(0xff246bfd);
-        color = const Color(0xff7737ff);
+        color = const Color(0xff246bfd);
+        // color = const Color(0xff7737ff);
         break;
     }
     return color;
@@ -115,7 +123,7 @@ class Utils {
     tileMode: TileMode.clamp,
   );
 
-  static dynamic handleError(e, context)   {
+  static dynamic handleError(e, context) {
     return toast(context, (e.message as SResponse).msg!);
   }
 }

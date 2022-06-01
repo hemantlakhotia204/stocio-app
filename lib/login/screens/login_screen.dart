@@ -8,7 +8,7 @@ import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
-import 'package:stocio_app/event/screens/events_screen.dart';
+import 'package:stocio_app/home/screens/home_screen.dart';
 import 'package:stocio_app/login/screens/register_screen.dart';
 import 'package:stocio_app/login/services/login_service.dart';
 
@@ -256,12 +256,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           await sharedPreferencesRepository.save("rt", res.data["rt"]);
           debugPrint(res.data.toString());
 
-          ///navigate to event screen
+          ///navigate to home screen
           return Navigator.pushReplacement(
             context,
             PageRouteBuilder(
                 pageBuilder: (context, animation, secondaryAnimation) {
-                  return const Event();
+                  return const Home();
                 },
                 transitionDuration: const Duration(milliseconds: 600),
                 transitionsBuilder:

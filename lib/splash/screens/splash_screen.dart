@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:stocio_app/common/store/sp_repository.dart';
+import 'package:sizer/sizer.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -10,14 +12,25 @@ class Splash extends StatefulWidget {
 }
 
 class _SplashState extends State<Splash> {
-  //Check if user is logged in or not
+  final SharedPreferencesRepository sharedPreferencesRepository =
+      SharedPreferencesRepository();
+
   @override
   void initState() {
-    _loadScreen('/login');
     super.initState();
+
+    /// Check if user is logged in or not
+    sharedPreferencesRepository.getAll("at").then((atValue) {
+      if (atValue != null && atValue.length > 0) {
+        debugPrint(atValue);
+        _loadScreen('/home');
+      } else {
+        _loadScreen('/login');
+      }
+    });
   }
 
-  //Load new Screen
+  ///Load new Screen
   _loadScreen(String routeName) {
     Duration _duration = const Duration(seconds: 2);
     return Timer(
@@ -26,10 +39,14 @@ class _SplashState extends State<Splash> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Center(
         child: Text(
-            'Stocio says Hi!👋'
+          'Stocio says Hi!👋',
+          style: TextStyle(
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w600,
+          ),
         ),
       ),
     );
