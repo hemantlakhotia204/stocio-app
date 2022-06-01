@@ -5,8 +5,14 @@ import 'package:stocio_app/common/utils/utils.dart';
 class SText extends StatelessWidget {
   final String prefixText;
   final String suffixText;
+  final double? fontSize;
 
-  const SText({Key? key, required this.prefixText, required this.suffixText}) : super(key: key);
+  const SText(
+      {Key? key,
+      required this.prefixText,
+      required this.suffixText,
+      this.fontSize})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,13 +24,13 @@ class SText extends StatelessWidget {
             text: prefixText,
             style: TextStyle(
                 color: Colors.white,
-                fontSize: 20.sp,
+                fontSize: fontSize ?? 20.sp,
                 fontWeight: FontWeight.w600),
             children: [
               TextSpan(
                   style: TextStyle(
                       color: Utils.getColor('PT'),
-                      fontSize: 24.sp,
+                      fontSize: fontSize != null ? fontSize! + 4.sp : 24.sp,
                       fontWeight: FontWeight.w600),
                   text: suffixText)
             ]),

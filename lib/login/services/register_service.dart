@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:stocio_app/common/models/s_response.dart';
 import 'package:stocio_app/common/models/user_model.dart';
 import 'package:stocio_app/common/services/http_dio.dart';
+import 'package:flutter/material.dart';
 
 class RegisterService {
   RegisterService._internal();
@@ -14,6 +15,7 @@ class RegisterService {
   }
 
   Future<SResponse> registerUser(UserModel data) async {
+    debugPrint(data.toJson().toString());
     final response = await httpDio.dio.post(
       '/api/auth/register',
       options: Options(

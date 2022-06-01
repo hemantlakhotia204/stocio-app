@@ -9,7 +9,7 @@ import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
-import 'package:stocio_app/login/screens/register_screen.dart';
+import 'package:stocio_app/login/screens/institutes_select_screen.dart';
 import 'package:stocio_app/login/services/login_service.dart';
 
 class Login extends StatefulWidget {
@@ -170,7 +170,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             height: 2.h,
                           ),
                           SButton(
-                            primaryColor: Utils.getColor('PT'),
+                            primaryColor: Utils.getColor('PBB'),
                             onPressed: () async =>
                                 await _handleUserLogin(context),
                             text: 'Sign In',
@@ -182,7 +182,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                 PageRouteBuilder(
                                     pageBuilder: (context, animation,
                                         secondaryAnimation) {
-                                      return const Register();
+                                      return const InstitutesSelectScreen();
                                     },
                                     transitionDuration:
                                         const Duration(milliseconds: 600),
@@ -198,7 +198,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             child: Container(
                               alignment: Alignment.center,
                               color: Colors.transparent,
-                              width: 80.w,
                               padding: EdgeInsets.symmetric(
                                   vertical: 1.h, horizontal: 4.w),
                               child: Text(
@@ -233,20 +232,20 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.dispose();
   }
 
-  /// handle user login
   _handleUserLogin(BuildContext context) async {
-    /// remove focus from form fields
+    var state = _key.currentState;
+
+    loader.showLoaderDialog();
     _emailNode.unfocus();
     _passwordNode.unfocus();
 
-    /// validate form state
     try {
-      if (_key.currentState!.validate()) {
+      /// validate form state
+      if (state != null && state.validate()) {
         String email = _emailController.text.trim().toLowerCase();
         String password = _passwordController.text.trim();
 
         /// call login api
-        loader.showLoaderDialog();
         SResponse res = await _loginService.loginUser(email, password, context);
 
         /// if response is OK, do uiChanges
@@ -274,15 +273,15 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           );
         }
       }
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (e) {
+      debugPrint(e.toString());
 
       /// handle error
-      if (error.runtimeType == DioError) {
-        Utils.toast(context, error.toString());
+      if (e.runtimeType == DioError) {
+        Utils.toast(context, e.toString());
       } else {
-        Utils.handleError(error, context);
-        _handleStatusCode(error);
+        Utils.handleError(e, context);
+        _handleStatusCode(e);
       }
     }
     loader.hideLoader();

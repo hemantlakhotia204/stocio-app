@@ -60,11 +60,11 @@ class Utils {
       contentPadding: contentPadding(),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(2.w),
-        borderSide: BorderSide(color: getColor('PT'), width: 0.5.w),
+        borderSide: BorderSide(color: getColor('PBB'), width: 0.5.w),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(2.w),
-        borderSide: BorderSide(color: getColor('PT'), width: 0.5.w),
+        borderSide: BorderSide(color: getColor('PBB'), width: 0.5.w),
       ),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(2.w),
@@ -99,7 +99,8 @@ class Utils {
         break;
       case 'PBB':
         //primary button bg
-        color = const Color(0xff246bfd);
+        color = const Color(0xffa2467a);
+
         // color = const Color(0xff7737ff);
         break;
     }

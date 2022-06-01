@@ -14,9 +14,10 @@ class SBack extends StatelessWidget {
         heroTag: 'Back',
         onPressed: () => Navigator.pop(context),
         child: Icon(
-          Icons.arrow_back,
-          size: 25.sp,
+          Icons.arrow_back_ios_new_rounded,
+          size: 24.sp,
         ),
+        elevation: 10,
         backgroundColor: Colors.transparent,
         // backgroundColor: Colors.white.withOpacity(0.25),
       ),

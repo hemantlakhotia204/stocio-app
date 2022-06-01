@@ -4,9 +4,9 @@ import 'package:stocio_app/common/models/institute_model.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
 import 'package:stocio_app/login/models/register_screen_model.dart';
 import 'package:stocio_app/login/screens/confirm_screen.dart';
-import 'package:stocio_app/login/screens/form_screen.dart';
-import 'package:stocio_app/login/screens/login_screen.dart';
 import 'package:stocio_app/login/screens/register_screen.dart';
+import 'package:stocio_app/login/screens/login_screen.dart';
+import 'package:stocio_app/login/screens/institutes_select_screen.dart';
 import 'package:stocio_app/splash/screens/splash_screen.dart';
 import 'package:sizer/sizer.dart';
 
@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
           routes: {
             '/splash': (context) => const Splash(),
             '/login': (context) => const Login(),
-            '/register': (context) => const Register(),
+            '/register': (context) => const InstitutesSelectScreen(),
             '/home': (context) => const Home(),
-            '/form': (context) => FormScreen(arguments: ModalRoute.of(context)!.settings.arguments as InstituteModel),
+            '/form': (context) => RegisterScreen(arguments: ModalRoute.of(context)!.settings.arguments as InstituteModel),
             '/confirm_mail': (context) => const ConfirmScreen(),
           },
         );
@@ -51,4 +51,4 @@ class MyApp extends StatelessWidget {
 ///CLI command to run when there is change in models:
 ///flutter pub run build_runner build
 
-//todo: make form_screen.dart and register_screen.dart one.
+//todo: make register_screen.dart and institutes_select_screen.dart one.

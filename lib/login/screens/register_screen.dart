@@ -1,144 +1,206 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/models/institute_model.dart';
+import 'package:stocio_app/common/models/s_response.dart';
+import 'package:stocio_app/common/models/user_model.dart';
 import 'package:stocio_app/common/utils/utils.dart';
-import 'package:stocio_app/common/widgets/dropdown_search.dart';
+import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/widgets/s_button.dart';
 import 'package:stocio_app/common/widgets/s_ios_back.dart';
+import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
-import 'package:stocio_app/login/models/register_screen_model.dart';
+import 'package:stocio_app/common/widgets/s_text_form_field.dart';
+import 'package:stocio_app/login/services/register_service.dart';
 
-class Register extends StatefulWidget {
-  const Register({Key? key}) : super(key: key);
+class RegisterScreen extends StatefulWidget {
+  ///Institute details passed from register_screen
+  final InstituteModel? arguments;
+
+  const RegisterScreen({Key? key, this.arguments}) : super(key: key);
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _RegisterState extends State<Register> {
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  final TextEditingController _instituteController = TextEditingController();
+class _RegisterScreenState extends State<RegisterScreen> {
+  ///controllers for the form fields
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
-  List<String> instituteNames = [
-    "National Institute of Technology Kurukshetra",
-    "National Institute of Technology Allahabad",
-  ];
+  ///focus nodes for the form fields
+  final FocusNode _emailNode = FocusNode();
+  final FocusNode _nameNode = FocusNode();
+  final FocusNode _passNode = FocusNode();
 
-  /// dummy instance of instituteModel
-  InstituteModel institute = InstituteModel(instituteName: '', domainId: '');
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final RegisterService registerService = RegisterService();
 
-  @override
-  void initState() {
-    super.initState();
-
-    ///set provider for {getInstitutes()} api
-    Provider.of<RegisterScreenModel>(context, listen: false).getInstitutes();
-  }
+  late SLoader loader = SLoader(context: context);
 
   @override
   Widget build(BuildContext context) {
+    String? abbr = widget.arguments?.abbr;
+    String _welcomeText = "$abbr and Stocio \nwelcomes you 😁.";
+
     return Scaffold(
-      backgroundColor: Utils.getColor('PB'),
       resizeToAvoidBottomInset: true,
-      floatingActionButton: FloatingActionButton(
-        heroTag: 'Next',
-        onPressed: () {
-          /// validate for field before saving data
-          if (_key.currentState!.validate()) {
-            _key.currentState!.save();
-            /// navigate to next screen with institute details as arguments
-            debugPrint(institute.toJson().toString());
-            Navigator.pushNamed(context, '/form', arguments: institute);
-          }
+      backgroundColor: Utils.getColor('PB'),
+      body: GestureDetector(
+        onTap: () {
+          _emailNode.unfocus();
+          _nameNode.unfocus();
+          _passNode.unfocus();
         },
-        backgroundColor: Utils.getColor('SB').withAlpha(50),
-        elevation: 10,
-        child: Icon(
-          Icons.arrow_forward_ios_sharp,
-          size: 24.sp,
-        ),
-      ),
-      body: Consumer<RegisterScreenModel>(
-        builder: (context, instituteModel, child) {
-
-          /// get data from institute service.
-          List<InstituteModel>? institutes = instituteModel.institutes;
-
-          /// check if the data is valid and not empty
-          if (institutes != null && institutes.isNotEmpty) {
-
-            /// get institute names from object list to pass in dropDown widget
-            List<String> names = [];
-            for (var element in institutes) {
-              names.add(element.instituteName);
-            }
-            instituteNames = names;
-
-            /// return this widget if everything is ok
-            return SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SBack(),
-                  Container(
-                    padding: Utils.screenPadding(),
-                    child: Form(
-                      key: _key,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SBack(),
+                Container(
+                  padding: Utils.contentPadding(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      Text(
+                        _welcomeText,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 6.h,
+                      ),
+                      SText(
+                        prefixText: 'enter your ',
+                        suffixText: 'details👇',
+                        fontSize: 16.sp,
+                      ),
+                      Row(
                         children: [
-                          SizedBox(
-                            height: 5.h,
+                          Expanded(
+                            flex: 2,
+                            child: STextFormField(
+                              controller: _emailController,
+                              icon: Icons.mail_rounded,
+                              label: 'Email',
+                              validator: (value) => _validator(value),
+                              focusNode: _emailNode,
+                            ),
                           ),
-                          const SText(
-                            prefixText: 'choose your ',
-                            suffixText: 'institute',
-                          ),
-                          SizedBox(
-                            height: 4.h,
-                          ),
-                          DropDownSearch(
-                              controller: _instituteController,
-                              items: instituteNames,
-                              hintText: 'Institute',
-                              validator: (String? value) {
-                                if (value == null) {
-                                  return 'This field cannot be empty';
-                                }
-
-                                if (!instituteNames
-                                    .asMap()
-                                    .containsValue(value)) {
-                                  return 'Institute not found';
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                for (var element in institutes) {
-                                  if (element.instituteName.toString() == value.toString().trim()) {
-                                    setState(() {
-                                      institute = element;
-                                    });
-                                  }
-                                }
-                              }
+                          SizedBox(width: 2.w),
+                          Expanded(
+                            child: Text(
+                              widget.arguments!.domainId,
+                              style: TextStyle(
+                                  fontSize: 14.sp,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
                           )
-                          // const SText(
-                          //     prefixText: 'did not find your college in list, don’t worry,\n',
-                          //     suffixText: 'let stocio invite them :)')
                         ],
                       ),
-                    ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      STextFormField(
+                        textInputType: TextInputType.text,
+                        controller: _nameController,
+                        icon: Icons.person_rounded,
+                        label: 'Name',
+                        validator: (value) => _validator(value),
+                        focusNode: _nameNode,
+                      ),
+                      SizedBox(
+                        height: 2.h,
+                      ),
+                      STextFormField(
+                        obscureText: true,
+                        controller: _passwordController,
+                        icon: Icons.password_rounded,
+                        label: 'Password',
+                        validator: (value) => _validator(value),
+                        focusNode: _passNode,
+                      ),
+                      // SizedBox(
+                      //   height: 2.h,
+                      // ),
+                      // STextFormField(
+                      //   controller: _confirmController,
+                      //   icon: Icons.lock_rounded,
+                      //   label: 'Confirm Password',
+                      //   validator: (value) => _validator(value),
+                      //   focusNode: _confirmNode,
+                      // ),
+                      SizedBox(
+                        height: 15.h,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: SButton(
+                            text: 'Register',
+                            onPressed: _handleRegisterUser,
+                            primaryColor: Utils.getColor('PBB')),
+                      )
+                    ],
                   ),
-                ],
-              ),
-            );
-          } else {
-            /// return this widget if there is some issue
-            return const SizedBox(child: Text('Some error, try again'));
-          }
-        },
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
+  }
+
+  ///validator for the form fields
+  String? _validator(String? value) {
+    if (value != null) {
+      return null;
+    }
+    return 'field cannot be empty';
+  }
+
+  _handleRegisterUser() async {
+    var state = _formKey.currentState;
+
+    loader.showLoaderDialog();
+
+    _emailNode.unfocus();
+    _nameNode.unfocus();
+    _passNode.unfocus();
+
+    try {
+      if (state != null && state.validate()) {
+        UserModel user = UserModel(
+            name: _nameController.text.trim(),
+            email: _emailController.text.trim(),
+            instituteRef: widget.arguments!.id!.trim(),
+            password: _passwordController.text.trim());
+
+        SResponse res = await registerService.registerUser(user);
+        if (res.code == 200) {
+          Navigator.pushNamed(context, '/confirm_mail');
+        }
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+
+      /// handle error
+      if (e.runtimeType == DioError) {
+        Utils.toast(context, e.toString());
+      } else {
+        Utils.handleError(e, context);
+      }
+    }
+    loader.hideLoader();
   }
 }
