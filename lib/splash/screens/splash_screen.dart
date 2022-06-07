@@ -22,7 +22,6 @@ class _SplashState extends State<Splash> {
     /// Check if user is logged in or not
     sharedPreferencesRepository.getAll("at").then((atValue) {
       if (atValue != null && atValue.length > 0) {
-        debugPrint(atValue);
         _loadScreen('/home');
       } else {
         _loadScreen('/login');

@@ -21,14 +21,14 @@ class Utils {
     );
   }
 
-  static toast(BuildContext context, String message) {
+  static toast(BuildContext context, String message, {bool? success = false}) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           message,
-          style: TextStyle(fontSize: 10.sp),
+          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
         ),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: success!= null && success ? Colors.grey.shade400 : Colors.redAccent,
         duration: const Duration(milliseconds: 2000),
       ),
     );
@@ -40,7 +40,7 @@ class Utils {
   }
 
   static screenPadding() {
-    return EdgeInsets.symmetric(horizontal: 8.w, vertical: 5.h);
+    return EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h);
   }
 
   ///for textFormFields
@@ -94,13 +94,12 @@ class Utils {
         break;
       case 'PT':
         //primary text
-        // color = const Color(0xff7142d6);
         color = const Color(0xffa2467a);
         break;
       case 'PBB':
         //primary button bg
         color = const Color(0xffa2467a);
-
+        // color = const Color(0xff7142d6);
         // color = const Color(0xff7737ff);
         break;
     }

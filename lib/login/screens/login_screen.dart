@@ -4,7 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/models/s_response.dart';
 import 'package:stocio_app/common/store/sp_repository.dart';
 import 'package:stocio_app/common/utils/utils.dart';
-import 'package:stocio_app/common/widgets/s_button.dart';
+import 'package:stocio_app/common/widgets/s_text_button.dart';
 import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/common/widgets/s_text_form_field.dart';
@@ -100,7 +100,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         Container(
                           alignment: Alignment.bottomCenter,
                           padding: EdgeInsets.only(bottom: 15.h),
-                          child: SButton(
+                          child: STextButton(
                             width: 60.w,
                             primaryColor: Utils.getColor('PBB'),
                             text: 'Welcome back',
@@ -169,7 +169,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           SizedBox(
                             height: 2.h,
                           ),
-                          SButton(
+                          STextButton(
                             primaryColor: Utils.getColor('PBB'),
                             onPressed: () async =>
                                 await _handleUserLogin(context),

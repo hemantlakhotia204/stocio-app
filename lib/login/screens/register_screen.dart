@@ -5,7 +5,7 @@ import 'package:stocio_app/common/models/s_response.dart';
 import 'package:stocio_app/common/models/user_model.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:sizer/sizer.dart';
-import 'package:stocio_app/common/widgets/s_button.dart';
+import 'package:stocio_app/common/widgets/s_text_button.dart';
 import 'package:stocio_app/common/widgets/s_ios_back.dart';
 import 'package:stocio_app/common/widgets/s_loader.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
@@ -145,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       Align(
                         alignment: Alignment.center,
-                        child: SButton(
+                        child: STextButton(
                             text: 'Register',
                             onPressed: _handleRegisterUser,
                             primaryColor: Utils.getColor('PBB')),

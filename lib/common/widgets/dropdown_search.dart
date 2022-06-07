@@ -142,7 +142,7 @@ class _DropDownSearchState extends State<DropDownSearch> {
                           _listVisibility
                               ? Icons.arrow_drop_up_outlined
                               : Icons.arrow_drop_down_outlined,
-                          size: 24.sp,
+                          size: 22.sp,
                           color: Colors.white,
                         ),
                       ),

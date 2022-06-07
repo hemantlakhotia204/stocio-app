@@ -55,7 +55,7 @@ class _InstitutesSelectScreenState extends State<InstitutesSelectScreen> {
         elevation: 10,
         child: Icon(
           Icons.keyboard_return_rounded,
-          size: 24.sp,
+          size: 22.sp,
         ),
       ),
       body: Container(

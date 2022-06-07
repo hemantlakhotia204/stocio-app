@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 import 'package:sizer/sizer.dart';
-import 'package:stocio_app/common/widgets/s_button.dart';
+import 'package:stocio_app/common/widgets/s_text_button.dart';
 import 'package:stocio_app/common/widgets/s_text.dart';
 import 'package:stocio_app/login/services/otp_service.dart';
 
@@ -99,7 +99,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                           selectedColor: Utils.getColor('')),
                     ),
                   ),
-                  SButton(
+                  STextButton(
                     text: 'Submit OTP',
                     onPressed: _handleOtpSubmit(_otpController.text.trim()),
                     primaryColor: Utils.getColor('PBB'),

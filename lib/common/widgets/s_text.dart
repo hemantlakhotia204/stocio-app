@@ -29,8 +29,9 @@ class SText extends StatelessWidget {
             children: [
               TextSpan(
                   style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
                       color: Utils.getColor('PT'),
-                      fontSize: fontSize != null ? fontSize! + 4.sp : 24.sp,
+                      fontSize: fontSize != null ? fontSize! + 2.sp : 22.sp,
                       fontWeight: FontWeight.w600),
                   text: suffixText)
             ]),

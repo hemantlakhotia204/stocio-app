@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Flutter Demo',
           theme: ThemeData(
+            brightness: Brightness.dark,
             primarySwatch: Colors.blue,
             fontFamily: "Poppins",
           ),
@@ -39,7 +40,9 @@ class MyApp extends StatelessWidget {
             '/login': (context) => const Login(),
             '/register': (context) => const InstitutesSelectScreen(),
             '/home': (context) => const Home(),
-            '/form': (context) => RegisterScreen(arguments: ModalRoute.of(context)!.settings.arguments as InstituteModel),
+            '/form': (context) => RegisterScreen(
+                arguments: ModalRoute.of(context)!.settings.arguments
+                    as InstituteModel),
             '/confirm_mail': (context) => const ConfirmScreen(),
           },
         );
