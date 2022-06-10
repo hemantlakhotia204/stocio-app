@@ -48,7 +48,7 @@ class _InstitutesSelectScreenState extends State<InstitutesSelectScreen> {
 
             /// navigate to next screen with institute details as arguments
             debugPrint(institute.toJson().toString());
-            Navigator.pushNamed(context, '/form', arguments: institute);
+            Navigator.pushNamed(context, '/register', arguments: institute);
           }
         },
         backgroundColor: Utils.getColor('PB'),

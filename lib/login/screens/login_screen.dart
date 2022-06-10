@@ -33,7 +33,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   final LoginService _loginService = LoginService();
   final SharedPreferencesRepository sharedPreferencesRepository =
-      SharedPreferencesRepository();
+  SharedPreferencesRepository();
   late SLoader loader;
 
   @override
@@ -52,6 +52,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     }
 
     return WillPopScope(
+
       /// when android back button is pressed
       onWillPop: () async {
         if (_pageState != 0) {
@@ -121,7 +122,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   decoration: BoxDecoration(
                       color: Utils.getColor('PB'),
                       borderRadius:
-                          BorderRadius.vertical(top: Radius.circular(8.w))),
+                      BorderRadius.vertical(top: Radius.circular(8.w))),
                   transform: Matrix4.translationValues(0, _dyOffset, 0),
                   curve: Curves.fastLinearToSlowEaseIn,
                   duration: const Duration(milliseconds: 1500),
@@ -142,7 +143,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             focusNode: _emailNode,
                             controller: _emailController,
                             label: 'Email',
-                            icon: Icons.mail_rounded,
+                            prefixIcon: Icon(
+                                Icons.mail_rounded,
+                                size: 20.sp
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'field cannot be empty';
@@ -158,7 +162,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                             focusNode: _passwordNode,
                             controller: _passwordController,
                             label: 'Password',
-                            icon: Icons.lock_rounded,
+                            prefixIcon: Icon(
+                                Icons.lock_rounded,
+                              size: 20.sp
+                            ),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'field cannot be empty';
@@ -172,28 +179,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           STextButton(
                             primaryColor: Utils.getColor('PBB'),
                             onPressed: () async =>
-                                await _handleUserLogin(context),
+                            await _handleUserLogin(context),
                             text: 'Sign In',
                           ),
                           InkWell(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                    pageBuilder: (context, animation,
-                                        secondaryAnimation) {
-                                      return const InstitutesSelectScreen();
-                                    },
-                                    transitionDuration:
-                                        const Duration(milliseconds: 600),
-                                    transitionsBuilder: (context, animation,
-                                        secondaryAnimation, child) {
-                                      return FadeTransition(
-                                        opacity: animation,
-                                        child: child,
-                                      );
-                                    }),
-                              );
+                              Utils.navigatePush(context, (p0, p1, p2) => const InstitutesSelectScreen());
                             },
                             child: Container(
                               alignment: Alignment.center,
@@ -256,21 +247,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           debugPrint(res.data.toString());
 
           ///navigate to home screen
-          return Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-                pageBuilder: (context, animation, secondaryAnimation) {
-                  return const Home();
-                },
-                transitionDuration: const Duration(milliseconds: 600),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) {
-                  return FadeTransition(
-                    opacity: animation,
-                    child: child,
-                  );
-                }),
-          );
+          return Utils.navigatePushReplace(context, (p0, p1, p2) => const Home());
         }
       }
     } catch (e) {

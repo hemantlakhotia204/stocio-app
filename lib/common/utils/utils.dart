@@ -28,7 +28,9 @@ class Utils {
           message,
           style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w600),
         ),
-        backgroundColor: success!= null && success ? Colors.grey.shade400 : Colors.redAccent,
+        backgroundColor: success != null && success
+            ? Colors.grey.shade400
+            : Colors.redAccent,
         duration: const Duration(milliseconds: 2000),
       ),
     );
@@ -43,8 +45,8 @@ class Utils {
     return EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h);
   }
 
-  ///for textFormFields
-  static inputDecoration({String? label, Widget? icon}) {
+  //for textFormFields
+  static inputDecoration({String? label, Widget? prefixIcon, Widget? suffixIcon, Widget? suffix}) {
     return InputDecoration(
       label: label != null
           ? Text(
@@ -70,11 +72,13 @@ class Utils {
         borderRadius: BorderRadius.circular(2.w),
         borderSide: BorderSide(color: Colors.redAccent, width: 0.5.w),
       ),
-      prefixIcon: icon,
+      prefixIcon: prefixIcon,
+      suffixIcon: suffixIcon,
+      suffix: suffix
     );
   }
 
-  ///Global colors defined here
+  //Global colors defined here
   static Color getColor(String type) {
     Color color = Colors.white;
     switch (type) {
@@ -106,7 +110,7 @@ class Utils {
     return color;
   }
 
-  ///Add gradient to shimmering widgets while loading
+  //Add gradient to shimmering widgets while loading
   static const shimmerGradient = LinearGradient(
     colors: [
       Color(0xFFEBEBF4),
@@ -125,5 +129,44 @@ class Utils {
 
   static dynamic handleError(e, context) {
     return toast(context, (e.message as SResponse).msg!);
+  }
+
+  // navigation animation to other page
+  static Future navigatePushReplace(
+      BuildContext context,
+      Widget Function(BuildContext, Animation<double>, Animation<double>)
+          pageBuilder) async {
+    return await Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        pageBuilder: pageBuilder,
+        transitionDuration: const Duration(milliseconds: 600),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+    );
+  }
+
+  static Future navigatePush(
+      BuildContext context,
+      Widget Function(BuildContext, Animation<double>, Animation<double>)
+          pageBuilder) async {
+    return await Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: pageBuilder,
+        transitionDuration: const Duration(milliseconds: 600),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return FadeTransition(
+            opacity: animation,
+            child: child,
+          );
+        },
+      ),
+    );
   }
 }

@@ -4,14 +4,14 @@ import 'package:stocio_app/common/utils/utils.dart';
 import 'package:stocio_app/common/widgets/s_icon_button.dart';
 import 'package:stocio_app/common/widgets/s_text_button.dart';
 
-class EventCard extends StatefulWidget {
-  const EventCard({Key? key}) : super(key: key);
+class EventCardSmall extends StatefulWidget {
+  const EventCardSmall({Key? key}) : super(key: key);
 
   @override
-  State<EventCard> createState() => _EventCardState();
+  State<EventCardSmall> createState() => _EventCardSmallState();
 }
 
-class _EventCardState extends State<EventCard> {
+class _EventCardSmallState extends State<EventCardSmall> {
   bool bookmarked = false, liked = false;
 
   @override
@@ -78,7 +78,7 @@ class _EventCardState extends State<EventCard> {
                   ),
                 ),
                 SizedBox(
-                  width: 2.w,
+                  width: 3.w,
                 ),
                 SIconButton(
                   onPressed: () {
@@ -171,7 +171,7 @@ class _EventCardState extends State<EventCard> {
                 Expanded(
                   flex: 4,
                   child: STextButton(
-                    fontSize: 10.sp,
+                    fontSize: 12.sp,
                     text: 'Join',
                     onPressed: () {},
                     primaryColor: Utils.getColor('PBB'),

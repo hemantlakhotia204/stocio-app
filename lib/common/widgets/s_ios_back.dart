@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/utils/utils.dart';
 
 class SBack extends StatelessWidget {
   const SBack({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class SBack extends StatelessWidget {
         child: Icon(
           Icons.arrow_back_ios_new_rounded,
           size: 24.sp,
+          color: Utils.getColor('').withOpacity(0.9),
         ),
         elevation: 10,
         backgroundColor: Colors.transparent,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:stocio_app/common/models/institute_model.dart';
+import 'package:stocio_app/event/screens/event_screen.dart';
 import 'package:stocio_app/home/screens/home_screen.dart';
 import 'package:stocio_app/login/models/register_screen_model.dart';
 import 'package:stocio_app/login/screens/confirm_screen.dart';
@@ -38,12 +39,13 @@ class MyApp extends StatelessWidget {
           routes: {
             '/splash': (context) => const Splash(),
             '/login': (context) => const Login(),
-            '/register': (context) => const InstitutesSelectScreen(),
+            '/select_institute': (context) => const InstitutesSelectScreen(),
             '/home': (context) => const Home(),
-            '/form': (context) => RegisterScreen(
+            '/register': (context) => RegisterScreen(
                 arguments: ModalRoute.of(context)!.settings.arguments
                     as InstituteModel),
             '/confirm_mail': (context) => const ConfirmScreen(),
+            '/event': (context) => const EventScreen()
           },
         );
       },

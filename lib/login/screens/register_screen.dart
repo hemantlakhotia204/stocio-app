@@ -89,7 +89,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             flex: 2,
                             child: STextFormField(
                               controller: _emailController,
-                              icon: Icons.mail_rounded,
+                              prefixIcon: Icon(Icons.mail_rounded, size: 20.sp),
                               label: 'Email',
                               validator: (value) => _validator(value),
                               focusNode: _emailNode,
@@ -114,7 +114,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       STextFormField(
                         textInputType: TextInputType.text,
                         controller: _nameController,
-                        icon: Icons.person_rounded,
+                        prefixIcon: Icon(Icons.person_rounded, size: 20.sp),
                         label: 'Name',
                         validator: (value) => _validator(value),
                         focusNode: _nameNode,
@@ -125,21 +125,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       STextFormField(
                         obscureText: true,
                         controller: _passwordController,
-                        icon: Icons.password_rounded,
+                        prefixIcon: Icon(Icons.password_rounded, size: 20.sp),
                         label: 'Password',
                         validator: (value) => _validator(value),
                         focusNode: _passNode,
                       ),
-                      // SizedBox(
-                      //   height: 2.h,
-                      // ),
-                      // STextFormField(
-                      //   controller: _confirmController,
-                      //   icon: Icons.lock_rounded,
-                      //   label: 'Confirm Password',
-                      //   validator: (value) => _validator(value),
-                      //   focusNode: _confirmNode,
-                      // ),
                       SizedBox(
                         height: 15.h,
                       ),
