@@ -13,11 +13,11 @@ class EventCardSmall extends StatefulWidget {
 
 class _EventCardSmallState extends State<EventCardSmall> {
   bool bookmarked = false, liked = false;
+  var cardWidth = 70.w;
+  var cardHeight = 40.h;
 
   @override
   Widget build(BuildContext context) {
-    var cardWidth = 70.w;
-    var cardHeight = 40.h;
     return Container(
       margin: EdgeInsets.only(left: 5.w),
       width: cardWidth,
@@ -130,7 +130,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                       overflow: TextOverflow.ellipsis,
                       fontSize: 16.sp,
                       fontWeight: FontWeight.bold,
-                      color: Utils.getColor('DB'),
+                      color: Utils.getColor('ST'),
                     ),
                     softWrap: true,
                   ),
@@ -139,7 +139,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                     style: TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 10.sp,
-                        color: Utils.getColor("DB").withOpacity(0.75)),
+                        color: Utils.getColor("ST").withOpacity(0.75)),
                   ),
                   SizedBox(
                     height: 2.h,
@@ -164,7 +164,7 @@ class _EventCardSmallState extends State<EventCardSmall> {
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w500,
                       fontSize: 10.sp,
-                      color: Utils.getColor('DB').withOpacity(0.75),
+                      color: Utils.getColor('ST').withOpacity(0.75),
                     ),
                   ),
                 ),

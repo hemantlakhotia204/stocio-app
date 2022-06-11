@@ -46,7 +46,7 @@ class Utils {
   }
 
   //for textFormFields
-  static inputDecoration({String? label, Widget? prefixIcon, Widget? suffixIcon, Widget? suffix}) {
+  static inputDecoration({String? label, Widget? prefixIcon, Widget? suffixIcon, Widget? suffix, EdgeInsetsGeometry? padding}) {
     return InputDecoration(
       label: label != null
           ? Text(
@@ -59,7 +59,7 @@ class Utils {
           ? TextStyle(
               color: getColor(''), fontWeight: FontWeight.w500, fontSize: 16.sp)
           : null,
-      contentPadding: contentPadding(),
+      contentPadding: padding ?? contentPadding(),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(2.w),
         borderSide: BorderSide(color: getColor('PBB'), width: 0.5.w),
@@ -99,6 +99,9 @@ class Utils {
       case 'PT':
         //primary text
         color = const Color(0xffa2467a);
+        break;
+      case 'ST':
+        color = const Color(0xff181a20);
         break;
       case 'PBB':
         //primary button bg

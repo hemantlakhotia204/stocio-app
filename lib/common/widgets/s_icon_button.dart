@@ -28,7 +28,15 @@ class _SIconButtonState extends State<SIconButton> {
         constraints: BoxConstraints.tight(widget.size ?? Size(10.w, 10.w)),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(2.w)),
-            color: widget.backgroundColor),
+            color: widget.backgroundColor,
+            boxShadow: const [
+              BoxShadow(
+                  color: Colors.black26,
+                  spreadRadius: 0.5,
+                  blurRadius: 2,
+                  offset: Offset(3, 3))
+            ]
+        ),
         child: widget.icon,
       ),
     );

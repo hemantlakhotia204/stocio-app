@@ -12,19 +12,21 @@ class STextFormField extends StatefulWidget {
   final Icon? prefixIcon;
   final Icon? suffixIcon;
   final Widget? suffix;
+  final EdgeInsetsGeometry? padding;
 
-  const STextFormField(
-      {Key? key,
-      required this.controller,
-      this.label,
-      required this.validator,
-      this.focusNode,
-      this.textInputType,
-      this.obscureText,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.suffix})
-      : super(key: key);
+  const STextFormField({
+    Key? key,
+    required this.controller,
+    this.label,
+    required this.validator,
+    this.focusNode,
+    this.textInputType,
+    this.obscureText,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.suffix,
+    this.padding,
+  }) : super(key: key);
 
   @override
   State<STextFormField> createState() => _STextFormFieldState();
@@ -49,6 +51,7 @@ class _STextFormFieldState extends State<STextFormField> {
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,
         suffix: widget.suffix,
+        padding: widget.padding,
       ),
       validator: widget.validator,
       focusNode: widget.focusNode,

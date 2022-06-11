@@ -3,7 +3,9 @@ import 'package:sizer/sizer.dart';
 import 'package:stocio_app/common/utils/utils.dart';
 
 class SBack extends StatelessWidget {
-  const SBack({Key? key}) : super(key: key);
+  final void Function()? onPressed;
+
+  const SBack({Key? key, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class SBack extends StatelessWidget {
       width: 40.sp,
       child: FloatingActionButton(
         heroTag: 'Back',
-        onPressed: () => Navigator.pop(context),
+        onPressed: onPressed ?? () => Navigator.pop(context),
         child: Icon(
           Icons.arrow_back_ios_new_rounded,
           size: 24.sp,
