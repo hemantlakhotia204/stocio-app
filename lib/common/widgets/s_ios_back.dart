@@ -13,17 +13,13 @@ class SBack extends StatelessWidget {
       margin: EdgeInsets.only(left: 2.w, top: 6.h),
       height: 40.sp,
       width: 40.sp,
-      child: FloatingActionButton(
-        heroTag: 'Back',
+      child: IconButton(
         onPressed: onPressed ?? () => Navigator.pop(context),
-        child: Icon(
+        icon: Icon(
           Icons.arrow_back_ios_new_rounded,
           size: 24.sp,
-          color: Utils.getColor('').withOpacity(0.9),
+          color: Utils.getColor(''),
         ),
-        elevation: 10,
-        backgroundColor: Colors.transparent,
-        // backgroundColor: Colors.white.withOpacity(0.25),
       ),
     );
   }

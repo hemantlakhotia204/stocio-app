@@ -24,7 +24,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       body: Container(
-        width: double.infinity,
+        height: double.maxFinite,
+        width: double.maxFinite,
         decoration: Utils.bgGradient(),
         child: SingleChildScrollView(
           child: Column(

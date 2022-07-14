@@ -72,6 +72,7 @@ class Utils {
         borderRadius: BorderRadius.circular(2.w),
         borderSide: BorderSide(color: Colors.redAccent, width: 0.5.w),
       ),
+      alignLabelWithHint: true,
       prefixIcon: prefixIcon,
       suffixIcon: suffixIcon,
       suffix: suffix

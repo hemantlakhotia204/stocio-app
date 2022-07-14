@@ -4,7 +4,6 @@ part 'institute_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class InstituteModel {
-  // {instituteName(r), students(ref), professors(ref), abbr(r), {packType}(r), images(list)(if any), domainId(r)}
 
   final String? id;
   final String instituteName;

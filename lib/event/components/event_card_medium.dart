@@ -103,6 +103,7 @@ class _EventCardMediumState extends State<EventCardMedium> {
                   primaryColor: Utils.getColor('PBB'),
                   height: 5.h,
                   width: 20.w,
+                  padding: EdgeInsets.zero,
                 ),
               ],
             ),

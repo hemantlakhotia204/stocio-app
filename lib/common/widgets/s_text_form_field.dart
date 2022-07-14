@@ -13,6 +13,7 @@ class STextFormField extends StatefulWidget {
   final Icon? suffixIcon;
   final Widget? suffix;
   final EdgeInsetsGeometry? padding;
+  final int? maxLines;
 
   const STextFormField({
     Key? key,
@@ -26,6 +27,7 @@ class STextFormField extends StatefulWidget {
     this.suffixIcon,
     this.suffix,
     this.padding,
+    this.maxLines
   }) : super(key: key);
 
   @override
@@ -36,6 +38,7 @@ class _STextFormFieldState extends State<STextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: widget.maxLines ?? 1,
       obscuringCharacter: '*',
       keyboardType: widget.textInputType,
       obscureText: widget.obscureText ?? false,

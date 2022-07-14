@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:stocio_app/common/store/sp_repository.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/utils/utils.dart';
 
 class Splash extends StatefulWidget {
   const Splash({Key? key}) : super(key: key);
@@ -39,7 +40,11 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+        body: Container(
+      decoration: Utils.bgGradient(),
+      width: double.maxFinite,
+      height: double.maxFinite,
+      child: Center(
         child: Text(
           'Stocio says Hi!👋',
           style: TextStyle(
@@ -48,6 +53,6 @@ class _SplashState extends State<Splash> {
           ),
         ),
       ),
-    );
+    ));
   }
 }

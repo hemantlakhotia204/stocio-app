@@ -175,7 +175,10 @@ class _EventCardSmallState extends State<EventCardSmall> {
                     text: 'Join',
                     onPressed: () {},
                     primaryColor: Utils.getColor('PBB'),
-                    height: 5.h,
+                    height: 6.h,
+                    padding: Utils.contentPadding(horizontal: 2.w, vertical: 0.5.h),
+
+
                   ),
                 ),
               ],

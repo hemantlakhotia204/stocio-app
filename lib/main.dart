@@ -14,6 +14,8 @@ import 'package:sizer/sizer.dart';
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MultiProvider(providers: [
     ChangeNotifierProvider(create: (_) => RegisterScreenModel()),
   ], child: const MyApp()));
@@ -45,7 +47,7 @@ class MyApp extends StatelessWidget {
                 arguments: ModalRoute.of(context)!.settings.arguments
                     as InstituteModel),
             '/confirm_mail': (context) => const ConfirmScreen(),
-            '/event': (context) => const EventScreen()
+            '/event': (context) => const EventScreen(),
           },
         );
       },

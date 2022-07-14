@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:stocio_app/common/utils/utils.dart';
 
 class STextButton extends StatefulWidget {
   final String text;
@@ -8,6 +9,7 @@ class STextButton extends StatefulWidget {
   final Color? primaryColor;
   final Function() onPressed;
   final double? fontSize;
+  final EdgeInsetsGeometry? padding;
 
   const STextButton({
     Key? key,
@@ -17,6 +19,7 @@ class STextButton extends StatefulWidget {
     this.primaryColor = Colors.white,
     required this.onPressed,
     this.fontSize,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -29,6 +32,7 @@ class _STextButtonState extends State<STextButton> {
     return InkWell(
       onTap: widget.onPressed,
       child: Container(
+        padding: widget.padding ?? Utils.contentPadding(vertical: 2.h),
         alignment: Alignment.center,
         decoration: BoxDecoration(
             color: widget.primaryColor,
